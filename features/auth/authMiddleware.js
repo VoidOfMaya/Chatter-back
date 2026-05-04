@@ -19,7 +19,14 @@ const passportConfig=()=>{
     }))
 }
 const isAuthenticated = passport.authenticate('jwt',{session:false});
-
+/*
+ check if access token is valid?
+ if not check if  refresh token is valid?
+ if refresh token valid then authenticate new  access  token
+ if refresh token exists and revoked delete all refresh tokens and delete 
+    access token (promp user login)
+if  refresh token does not exist but access token 
+*/
 //authorization for different access levels goes here:
 
 export{

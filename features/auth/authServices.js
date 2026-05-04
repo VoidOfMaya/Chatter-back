@@ -1,5 +1,6 @@
 import {prisma} from '../../lib/prisma.js';
 import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import 'dotenv/config'
 /*
@@ -40,13 +41,9 @@ const login = async (data) =>{
     const match = await bcrypt.compare(password, user.password);
     if(!match) throw new Error("invalid login");
     //access token:-
-    const accessToken = jwt.sign(
-        {id: user.id, email: user.email},
-        process.env.APIKEY,
-        {expiresIn: '15m'}
-    )
+    const accessToken = createAToken(user);
     // refresh token:-
-    const refreshToken = await createRefreshToken(user)
+    const refreshToken = await createRToken(user)
     return{
         user:{
             id: user.id,
@@ -61,12 +58,32 @@ const login = async (data) =>{
         refreshToken
     }
 }
-// requires user id
-const createRefreshToken = async (user)=>{
-    const refreshToken = await bcrypt.hash(`${user.id}&${user.name}`,10);
+const createAToken = (user)=>{
+    const accessToken = jwt.sign(
+        {id: user.id, email: user.email},
+        process.env.APIKEY,
+        {expiresIn: '15m'}
+    )
+    return accessToken
+}
+// requires user object
+const createRToken = async (user)=>{
+
+    const refreshToken = crypto.randomBytes(32).toString('hex');
     const oneWeek = 7 * 24 * 60 * 1000; //one week in milliseconds
     const experationDate = new Date(Date.now() + oneWeek);
     try{
+        const getUserTokens = await prisma.refreshToken.findMany({
+            where: {
+                userId: user.id, 
+                revoked: false
+            },
+            data:{
+                revoked:true,
+            },
+        })
+        console.log(getUserTokens)
+        /*
         await prisma.refreshToken.create({
             data:{
                 token: refreshToken,           
@@ -74,10 +91,37 @@ const createRefreshToken = async (user)=>{
                 userId: Number(user.id)
             }
         })
+        */
         return refreshToken        
     }catch(err){
         throw new Error({message: err || 'token Generation issue'})
     }
+
+}
+const validateRToken = async (tokenString)=>{
+    const rToken = await prisma.refreshToken.findUnique({
+        where: { token: tokenString }
+    });
+
+   
+    if (!rToken) return false;
+
+    // If the token is already revoked
+    if (rToken.revoked) {
+        await prisma.refreshToken.updateMany({
+            where: { userId: rToken.userId }, 
+            data: { revoked: true }
+        });
+        throw new Error('Security Breach: Token reuse detected');
+    }
+
+    //EXPIRATION CHECK
+    const now = new Date();
+    if (rToken.expiresAt < now) {
+        throw new Error('Token Expired');
+    }
+    //token is valid, not revoked, and not expired.
+    return true 
 
 }
 export{
