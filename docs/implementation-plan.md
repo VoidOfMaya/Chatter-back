@@ -95,13 +95,13 @@ architecture tasks based on layers:
     [X]Register logic (hash password)
     [X]Login logic (verify password)
     [X]JWT access token generation
-    []JWT access token validation middleware
-    []refresh token generation
-    []refresh token validation
+    [X]JWT access token validation middleware
+    [X]refresh token generation
+    [X]refresh token validation 
 
 ## Input validation
-    []register validation
-    []login validation
+    [X]register validation
+    [X]login validation
     []user update validation
     [] chnl creation validation
     [] frnd request validation
@@ -118,7 +118,7 @@ architecture tasks based on layers:
 
 ## Routers
     []IndexRouter
-    []AuthRouter
+    [X]AuthRouter
     []userRouter
     []chnlRouter
     []frndRouter
@@ -126,9 +126,10 @@ architecture tasks based on layers:
 
 ## Controllers
     []authController
-        []registerUser
-        []Login
-        []logout
+        [X]registerUser
+        [X]Login
+        [X]logout
+        [X]access token refresh
 
     []userController
         []editUserProfile(user only)
@@ -161,7 +162,7 @@ architecture tasks based on layers:
 
 
 ## Middleware
-    []requireAuth(rout protection)
+    [X]requireAuth(rout protection)
     []requireChnlMember(members only)
     []requireMod
 
