@@ -5,7 +5,8 @@ import {
     createAToken, 
     createRToken,
     validateRToken, 
-    getUser
+    getUser,
+    revokeRtoken
     } from "./authServices.js";
 
 const newUserController = async (req, res) =>{
@@ -42,7 +43,6 @@ const tokenController = async (req, res)=>{
     try{
         const refreshToken = await validateRToken(req.body.rToken)
         if(refreshToken){
-            console.log(req.user)
             const newRToken = await createRToken(refreshToken.userId, refreshToken.token)
             const newAToken = await createAToken(refreshToken.userId)
             const user = await getUser(refreshToken.userId)
@@ -55,8 +55,17 @@ const tokenController = async (req, res)=>{
         res.status(err.status).json({code: err.code})
     }
 }
+const logoutController = async (req, res) =>{
+    try{
+        await revokeRtoken(req.body.token);
+        res.status(200).json({message: 'session token revoked'})
+    }catch(err){
+        res.status(500).json({code: err})
+    }
+}
 export{
     newUserController,
     loginController,
-    tokenController
+    tokenController,
+    logoutController
 }

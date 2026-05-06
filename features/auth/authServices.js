@@ -144,11 +144,20 @@ const validateRToken = async (tokenString)=>{
 const getUser = async (id) =>{
     return await prisma.user.findUnique({where:{id: id}});
 }
+const revokeRtoken = async (token)=>{
+    await prisma.refreshToken.update({
+        where:{token: token},
+        data:{
+            revoked: true
+        }
+    })
+}
 export{
     login,
     register,
     createAToken,
     createRToken,
     validateRToken,
-    getUser
+    getUser,
+    revokeRtoken
 }
