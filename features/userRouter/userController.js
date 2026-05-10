@@ -4,7 +4,7 @@ import { service } from "./userServices.js"
 const getDashboard = async (req, res)=>{
     try {
         //takes req.user.id to get dashboard
-        const data = await service.populateDashboard(1)
+        const data = await service.populateDashboard(req.user.id)
         res.status(200).json(data)
     } catch (err) {
       res.status(500).json({msg: err || 'internal server error'})  
@@ -13,7 +13,13 @@ const getDashboard = async (req, res)=>{
 }
 //gets current users profile
 const getCurrentUser = async (req, res)=>{
-    res.status(200).json({msg: 'user profile data'})
+    //takes user id from req.user
+    try {
+        const currentUser = await service.getcurrentUser(req.user.id)
+        res.status(200).json(currentUser)
+    } catch (err) {
+        res.status(500).json({msg: err || 'internal server error'})  
+    }
 }
 // edits and updates current user info
 const editCurrentUser = async (req, res)=>{

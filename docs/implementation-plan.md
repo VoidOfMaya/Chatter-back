@@ -146,7 +146,8 @@ architecture tasks based on layers:
         [X]access token refresh
 
     []userController
-        []getcurrentuser
+        [X]getcurrentuser
+        [X]getuserdashboard
         []editUserProfile(user only)
         []enableModPriv
 

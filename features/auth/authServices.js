@@ -73,7 +73,7 @@ const createAToken = async (userId)=>{
     const accessToken = jwt.sign(
         {id: user.id, email: user.email},
         process.env.APIKEY,
-        {expiresIn: '1h'}
+        {expiresIn: '1d'}
     )
     return accessToken
 }

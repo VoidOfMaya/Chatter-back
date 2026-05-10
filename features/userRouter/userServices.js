@@ -73,8 +73,23 @@ const populateDashboard = async (userId) =>{
     //requires data normalization
     return outboundData
 }
+const getcurrentUser= async(id)=>{
+    return await prisma.user.findUnique({
+        where:{id: id},
+        select:{
+            email:true,
+            name:true,
+            bio:true,
+            photo:true,
+            lastOnline:true,
+            isOnline: true,
+            createdAt:true
+        }
+    })
+}
 
 const service = {
-    populateDashboard
+    populateDashboard,
+    getcurrentUser
 }
 export{service}
