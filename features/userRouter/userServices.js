@@ -87,9 +87,21 @@ const getcurrentUser= async(id)=>{
         }
     })
 }
+const editCurrentUser = async( id, data) =>{
+    const user = await prisma.user.findUnique({where:{id: id}})
+    await prisma.user.update({
+        where: {id: id},
+        data:{
+            name: data.name ===''? user.name: data.name,
+            bio:   data.bio === ''? user.bio : data.bio,
+            photo: data.photo === ''? user.photo: data.photo
+        }
+    })
 
+}
 const service = {
     populateDashboard,
-    getcurrentUser
+    getcurrentUser,
+    editCurrentUser,
 }
 export{service}

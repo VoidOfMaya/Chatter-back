@@ -7,7 +7,7 @@ const getDashboard = async (req, res)=>{
         const data = await service.populateDashboard(req.user.id)
         res.status(200).json(data)
     } catch (err) {
-      res.status(500).json({msg: err || 'internal server error'})  
+      res.status(500).json({msg: err.message || 'internal server error'})  
     }
     
 }
@@ -18,12 +18,18 @@ const getCurrentUser = async (req, res)=>{
         const currentUser = await service.getcurrentUser(req.user.id)
         res.status(200).json(currentUser)
     } catch (err) {
-        res.status(500).json({msg: err || 'internal server error'})  
+        res.status(500).json({msg: err.message || 'internal server error'})  
     }
 }
 // edits and updates current user info
 const editCurrentUser = async (req, res)=>{
-    res.status(200).json({msg: 'Edit user profile data'})
+    try {
+        const newProfile = await service.editCurrentUser(req.user.id,req.body)
+        res.status(200).json({msg: 'updated successful'})
+    } catch (err) {
+        res.status(500).json({msg: err.message || 'internal server error'})      
+    }
+    
 }
 //gets other user profile by id!
 const viewUserProfile = async (req, res)=>{

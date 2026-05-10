@@ -145,21 +145,10 @@ architecture tasks based on layers:
         [X]logout
         [X]access token refresh
 
-    []userController
+    [X]userController
         [X]getcurrentuser
         [X]getuserdashboard
-        []editUserProfile(user only)
-        []enableModPriv
-
-    []chnlController
-        []createDmChnl
-        []createChnl (mods only)
-        []getUserChnls
-        []getChnlById
-        []reqJoinChnl
-        []addUserToChnl
-        []leaveChnl
-        []removeUserFromChnl (mod only)
+        [X]editUserProfile(user only)
 
     []frndController
         []getUserFrndReqs
@@ -170,11 +159,24 @@ architecture tasks based on layers:
         []removeFrndFromList
         []BlockUser
 
+    []chnlController
+        []createDmChnl
+        []createChnl (mods only)
+        []getUserChnls
+        []getChnlById
+        []reqJoinChnl
+        []addUserToChnl
+        []leaveChnl
+        []enableModPriv
+        []removeUserFromChnl (mod only)
+
     []msgController
         []createMsg
         []editMsg
         []deleteMsg
         []getMsgByChnlId
+
+
 
 
 ## Middleware
