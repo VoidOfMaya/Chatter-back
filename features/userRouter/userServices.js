@@ -19,8 +19,59 @@ const populateDashboard = async (userId) =>{
             }
         }
     })
+    const sanitizedUserData = () =>{
+        return {id: result.id, name: result.name, bio: result.bio,photo: result.photo}
+    }
+    const sanitizedChannelData = () =>{
+        let array =[];
+        result.channels.forEach(relation =>{
+            const channel= relation.channel;
+            array.push({
+                id: channel.id, 
+                name: channel.name,
+                type: channel.type})
+        })
+        return array;
+    }
+    const sanitizedFriendData = () =>{
+        let array =[];
+        result.friendSent.forEach(connection =>{
+            const friend = connection.friend;
+            array.push({
+                id: friend.id, 
+                name: friend.name,
+                photo: friend.photo,
+                bio: friend.bio,
+                onlineStatus: friend.isOnline? friend.isOnline : friend.lastOnline,
+            })
+        })
+        
+        result.friendsRecieved.forEach(connection =>{
+            const friend = connection.user
+            //checks for friendship duplication!
+            array.forEach(connection =>{
+                if(connection.id === friend.id)return
+                array.push({
+                    id: friend.id,
+                    name: friend.name,
+                    photo: friend.photo,
+                    bio: friend.bio,
+                    onlineStatus: friend.isOnline? friend.isOnline : friend.lastOnline,
+                })                
+            })
+
+            
+        })
+
+        return array
+    }
+    const outboundData ={
+        user: sanitizedUserData(),
+        channels: sanitizedChannelData(),
+        friends: sanitizedFriendData()
+    } 
     //requires data normalization
-    return result
+    return outboundData
 }
 
 const service = {
