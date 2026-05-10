@@ -1,10 +1,10 @@
 architecture tasks based on layers:
 ## Setup
     [X] Initialize Express server
-    [] Setup JWT strategy (Passport)
+    [X] Setup JWT strategy (Passport)
     [X] Setup Prisma (init + schema)
     [X] Create feature-based folder structure
-    [] Configure environment variables
+    [X] Configure environment variables
 
 ## Database(prismaORM)
 [X] Create models
@@ -42,22 +42,36 @@ architecture tasks based on layers:
         - content
         - created_at
         - reply_to {FK → Message.id}
+    [X]refreshToken
+        - id
+        - createdAt
+        - expiresAt
+        - revoked
+        - token
+        - userId { FK → user.id}
 ## Migration & seed
     [X] Run initial migration
 
     [X/pending production] Seed data
         [X/pending production] channel: {global}
 ## Services
-    []Authorization:-
-        [] Only chnl members can access msgs
-        [] Only msg author can edit/delete (or mod)
+    [X]Authentication:-
+        [X] register new user
+        [X] login 
+        [X] create access token
+        [X] create refresh token
+        [X] validate refresh token
+        [X] revoke refresh token
+        [X] get user by id
+    [X]Authorization:-
+        [] Only channel members can access msgs
+        [] Only messag author can edit/delete (or mod)
         [] Only mods can remove users
         [] Only addressee can accept frnd request
         [] Blocked users cannot:
             - send frnd requests
             - create DMs
     []User Services:-
-        [] createUser
         [] getUserById
         [] editUser
         [] blockUser
@@ -125,13 +139,14 @@ architecture tasks based on layers:
     []msgRouter
 
 ## Controllers
-    []authController
+    [X]authController
         [X]registerUser
         [X]Login
         [X]logout
         [X]access token refresh
 
     []userController
+        []getcurrentuser
         []editUserProfile(user only)
         []enableModPriv
 

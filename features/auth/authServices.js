@@ -23,11 +23,19 @@ implementing an access and refresh + token rotation on each refresh
 //A basic register and  login!
 //takes {email, password, name}
 const register = async (data) =>{
-    await prisma.user.create({
+    //creates user
+    const user = await prisma.user.create({
         data:{
             email: data.email,
             name: data.name,
             password: await bcrypt.hash(data.password,10) //hashes and encrypts pasword!
+        }
+    })
+    //grants access to global chat
+    await prisma.channelMember.create({
+        data:{
+            channelId: 1,
+            userId: user.id,
         }
     })
 }
@@ -65,7 +73,7 @@ const createAToken = async (userId)=>{
     const accessToken = jwt.sign(
         {id: user.id, email: user.email},
         process.env.APIKEY,
-        {expiresIn: '15m'}
+        {expiresIn: '1h'}
     )
     return accessToken
 }
@@ -141,7 +149,7 @@ const validateRToken = async (tokenString)=>{
     return rToken
 
 }
-const getUser = async (id) =>{
+const getUserById = async (id) =>{
     return await prisma.user.findUnique({where:{id: id}});
 }
 const revokeRtoken = async (token)=>{
@@ -158,6 +166,6 @@ export{
     createAToken,
     createRToken,
     validateRToken,
-    getUser,
+    getUserById,
     revokeRtoken
 }

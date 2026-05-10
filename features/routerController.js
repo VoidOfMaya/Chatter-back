@@ -1,9 +1,11 @@
 import {authRouter} from './auth/authRouter.js'
 import {indexRouter} from './index/indexRouter.js'
+import { userRouter } from './userRouter/userRouter.js'
 
 const pipe = {
     authRouter,
-    indexRouter
+    indexRouter,
+    userRouter
 }
 export{
     pipe
