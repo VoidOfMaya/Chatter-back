@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { controller } from "./userController.js";
+import {validate} from '../../validations/indexValidation.js'
 
 const userRouter = Router({mergeParams: true});
 //=======[CURRENT USER TO CURRENT USER ]==========
@@ -12,7 +13,7 @@ userRouter.put('/me/profile',controller.editCurrentUser)
 
 //=======[CURRENT USER TO OTHER USER]==========
 //gets other user profile by id!
-userRouter.get('/:userId/profile',controller.viewUserProfile)
+userRouter.get('/:id',validate.userId,controller.viewUserProfile)
 //blockes user {if friends: true}
 
 

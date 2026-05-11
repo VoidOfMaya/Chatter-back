@@ -23,7 +23,6 @@ app.use('/',pipe.indexRouter) // this houses the read rout for post and comments
 app.use('/auth', pipe.authRouter)
 app.use('/user',midware.isAuthenticated,pipe.userRouter)
 
-
 //error handlers:
 //404
 app.use((req, res, next)=>{

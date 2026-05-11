@@ -1,6 +1,6 @@
-import { body } from 'express-validator';
+import { body,param } from 'express-validator';
 
-const validateNewAccount =[
+const NewAccount =[
     body('email').trim().notEmpty().withMessage('Email is a required field')
                  .isEmail().withMessage('Please provide a valid email address')
                  .normalizeEmail(),
@@ -22,7 +22,7 @@ const validateNewAccount =[
             return true;
     })
 ]
-const validateLogin =[
+const Login =[
     body('email').trim().notEmpty().withMessage('Email is a required field')
                  .isEmail().withMessage('Please provide a valid email address')
                  .normalizeEmail(),
@@ -31,8 +31,17 @@ const validateLogin =[
             .isLength({min:8}).withMessage('password must atleast be 8 letters')
             .matches(/^[A-Za-z0-9\s.,!?@#$_-]+$/).withMessage('can only contain letters, numbers, hyphens, apostrophes'),
 ]
+const userId =[
+    param('id').trim().notEmpty().withMessage('no user id provided')
+    .toInt().withMessage('id must be a number')
+]
+
+const validate ={
+    NewAccount,
+    Login,
+    userId,
+}
 
 export{
-    validateNewAccount,
-    validateLogin
+    validate
 }

@@ -1,4 +1,5 @@
 import { service } from "./userServices.js"
+import { validationResult, matchedData } from "express-validator"
 
 //gets  friends& channels
 const getDashboard = async (req, res)=>{
@@ -15,7 +16,7 @@ const getDashboard = async (req, res)=>{
 const getCurrentUser = async (req, res)=>{
     //takes user id from req.user
     try {
-        const currentUser = await service.getcurrentUser(req.user.id)
+        const currentUser = await service.getUser(req.user.id)
         res.status(200).json(currentUser)
     } catch (err) {
         res.status(500).json({msg: err.message || 'internal server error'})  
@@ -33,7 +34,20 @@ const editCurrentUser = async (req, res)=>{
 }
 //gets other user profile by id!
 const viewUserProfile = async (req, res)=>{
-    res.status(200).json({msg: 'get other users data'})
+    //validation handler
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) return res.status(400).json({errors : errors.array()})
+    const data = matchedData(req);  
+    console.log(req.params.id)
+    console.log(data)
+
+    //takes user id from  params
+    try {
+        const currentUser = await service.getUser(data.id)
+        res.status(200).json(currentUser)
+    } catch (err) {
+        res.status(500).json({msg: err.message || 'internal server error'})  
+    }
 }
 //blockes user {if friends: true}
 const blockUser = async (req, res)=>{

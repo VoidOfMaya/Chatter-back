@@ -149,7 +149,8 @@ architecture tasks based on layers:
         [X]getcurrentuser
         [X]getuserdashboard
         [X]editUserProfile(user only)
-
+        [X]getOtherUsersbyId
+        
     []frndController
         []getUserFrndReqs
         []getUserFrndList

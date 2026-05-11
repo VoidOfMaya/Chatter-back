@@ -77,6 +77,7 @@ const getUser= async(id)=>{
     return await prisma.user.findUnique({
         where:{id: id},
         select:{
+            id: true,
             email:true,
             name:true,
             bio:true,
