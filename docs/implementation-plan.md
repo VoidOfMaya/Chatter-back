@@ -71,15 +71,15 @@ architecture tasks based on layers:
         [] Blocked users cannot:
             - send frnd requests
             - create DMs
-    []User Services:-
-        [] getUserById
-        [] editUser
-        [] blockUser
-        [] enableModPriv
+    [X]User Services:-
+        [X] getUserById
+        [X] editcurrentUser
+        [X] getcurrentuserDashboard
 
     []Channel services:-
         [] createChnl
         [] createDmChnl (2 users only)
+        [] enableModPriv
 
         [] getAllChnls (user-specific)
         [] getChnlById (with msgs + members)
@@ -97,10 +97,10 @@ architecture tasks based on layers:
         []getMsgByChnlId
 
     []Friend services:- 
-        [] getFrndsByUserId (accepted only)
-        [] getFrndRequests (pending)
+        [X] getFrndsByUserId (accepted only)
+        [X] getFrndRequests (pending)
         []createFrndRequest
-        []acceptFrndRequest
+        [X]acceptFrndRequest
         []rejectFrndRequest
         []removeFrnd
 
@@ -116,7 +116,7 @@ architecture tasks based on layers:
 ## Input validation
     [X]register validation
     [X]login validation
-    []user update validation
+    [X]user update validation
     [] chnl creation validation
     [] frnd request validation
     [] msg validation
@@ -133,7 +133,7 @@ architecture tasks based on layers:
 ## Routers
     []IndexRouter
     [X]AuthRouter
-    []userRouter
+    [X]userRouter
     []chnlRouter
     []frndRouter
     []msgRouter
@@ -150,15 +150,15 @@ architecture tasks based on layers:
         [X]getuserdashboard
         [X]editUserProfile(user only)
         [X]getOtherUsersbyId
-        
+        []BlockUser
+
     []frndController
-        []getUserFrndReqs
-        []getUserFrndList
+        [X]getUserFrndReqs
+        [X]getUserFrndList
         []sendFrndReq
-        []AcceptFrndReqById
+        [X]AcceptFrndReqById
         []rejectFrndReqById
         []removeFrndFromList
-        []BlockUser
 
     []chnlController
         []createDmChnl

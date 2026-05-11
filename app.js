@@ -22,6 +22,7 @@ app.use(passport.initialize());
 app.use('/',pipe.indexRouter) // this houses the read rout for post and comments Comment router will live here!
 app.use('/auth', pipe.authRouter)
 app.use('/user',midware.isAuthenticated,pipe.userRouter)
+app.use('/friend',midware.isAuthenticated,pipe.friendRouter)
 
 //error handlers:
 //404
