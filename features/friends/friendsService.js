@@ -16,7 +16,7 @@ const getActiveFriends = async (id) =>{
         status: 'ACTIVE'
     },
     select:{
-        user:{
+        friend:{
             select:{
                 id: true,
                 email: true,
@@ -32,7 +32,36 @@ const getActiveFriends = async (id) =>{
    })
    return result
 }
-//creates friend request (takes user id, and new friend id)
+const getFriendConnectionById = async (id) =>{
+   const result = await prisma.userFriends.findUnique({
+    where:{id: id},
+    select:{
+        friend:{
+            select:{
+                id: true,
+                email: true,
+                name: true,
+                bio: true,
+                photo: true,
+                lastOnline: true,
+                isOnline: true,
+                createdAt: true
+            }
+        }
+    }
+   })
+   return result
+}
+//creates friend request rakes senderid , revieverId)
+const sendFriendRequest = async (senderId, recieverId) =>{
+    const result = await prisma.userFriends.create({
+        data:{        
+            userId: senderId,    
+            friendId: recieverId
+        }
+    })
+    return result 
+}
 //gets friend requests(friends request sent to user)
 const getPendingFriends = async (id) =>{
     const result = await prisma.userFriends.findMany({
@@ -65,11 +94,20 @@ const acceptFriendRequest = async (recordId) =>{
     return result
 }
 //rejects friends request of status pending(deletes request recoord by id)
+const rejectFriendRelation = async (requestId) =>{
+    const result = await prisma.userFriends.delete({where:{id: requestId}})
+    return result 
+}
+
 //terminates friendship
 const service ={
     getActiveFriends,
+    getFriendConnectionById,
+    sendFriendRequest,
     getPendingFriends,
-    acceptFriendRequest
+    acceptFriendRequest,
+    rejectFriendRelation
+
 }
 export{
     service

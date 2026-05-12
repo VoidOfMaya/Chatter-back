@@ -96,13 +96,13 @@ architecture tasks based on layers:
         []deleteMsg
         []getMsgByChnlId
 
-    []Friend services:- 
+    [X]Friend services:- 
         [X] getFrndsByUserId (accepted only)
         [X] getFrndRequests (pending)
-        []createFrndRequest
+        [X]createFrndRequest
         [X]acceptFrndRequest
-        []rejectFrndRequest
-        []removeFrnd
+        [X]removeConnection * this acts as both reject request and terminate friendship!
+        [X]getFriendById
 
 
 ## Authentication
