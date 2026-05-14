@@ -1,5 +1,5 @@
 import { prisma } from "../../lib/prisma.js"
-
+// ======[AUTHENTICATED ONLY]============
 //gets channel info only for authenticated memebrs NO messages or members
 const getChannelInfo = async (id) =>{
     const result = await prisma.channel.findUnique({
@@ -19,6 +19,15 @@ const getChannelInfo = async (id) =>{
         }
     })
     return result
+}
+const joinRequest = async (channelId, userId) =>{
+    await prisma.channelMember.create({
+        data:{
+            channelId,
+            userId
+        }
+    })
+    return "request created"
 }
 // ======[MEMBERS ONLY]============
 const getChannelbyId = async (id) =>{
@@ -77,7 +86,8 @@ const service ={
     newChannel,
     getChannelbyId,
     getChannelInfo,
-    leaveChannel
+    leaveChannel,
+    joinRequest
 
 }
 export{

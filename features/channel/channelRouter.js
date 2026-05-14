@@ -8,6 +8,7 @@ const channelRouter = Router({mergeParams: true});
 //authenticated only
 channelRouter.get('/info',controller.getChannelInfo)
 channelRouter.post('/new',validate.newChannel,controller.createNewChannel)
+channelRouter.post('/joinreq',controller.joinRequest)
 
 //members only
 channelRouter.get('/' ,authorize.member ,controller.getDmChannel)

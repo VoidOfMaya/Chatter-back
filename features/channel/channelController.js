@@ -47,6 +47,17 @@ const leaveChannel = async (req, res) =>{
         res.status(500).json({error: err.message || 'Internal Server Error'})
     }    
 }
+const joinRequest = async (req, res) =>{
+    try {
+        const {connectionId} = req.params
+        const {id} = req.user
+        const request = await service.joinRequest(connectionId, id)
+        res.status(200).json(request)
+    } catch (err) {
+        res.status(500).json({error: err.message || 'Internal Server Error'})
+    }    
+}
+
 
 
 
@@ -54,7 +65,8 @@ const controller = {
     getDmChannel,
     createNewChannel,
     getChannelInfo,
-    leaveChannel
+    leaveChannel,
+    joinRequest
 }
 
 export{

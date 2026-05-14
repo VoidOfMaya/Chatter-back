@@ -64,10 +64,9 @@ architecture tasks based on layers:
         [X] revoke refresh token
         [X] get user by id
     [X]Authorization:-
-        [] Only channel members can access msgs
+        [X] Only channel members
         [] Only messag author can edit/delete (or mod)
-        [] Only mods can remove users
-        [] Only addressee can accept frnd request
+        [X] Only mods
         [] Blocked users cannot:
             - send frnd requests
             - create DMs
@@ -82,15 +81,15 @@ architecture tasks based on layers:
         [X] createDmChnl (2 users only) * implemented into the accept friend request
         [X] getAllChnls (user-specific)route
         [X] getChnlById (without members , or message info)
-        [] requestJoinChnl
+        [X] requestJoinChnl
  
         O-> channelMember routes
         [X] getChnlById (with members , or message info)
-        [] leaveChnl
+        [X] leaveChnl
 
         O-> moderated routes
         [] getJoinRequests
-        [] getJoinRequstbyId
+        [] getJoinRequstbyId?
         [] acceptRequest
         [] rejectRequest
 
@@ -160,22 +159,22 @@ architecture tasks based on layers:
         [X]getOtherUsersbyId
         []BlockUser
 
-    []frndController
+    [X]frndController
         [X]getUserFrndReqs
         [X]getUserFrndList
-        []sendFrndReq
+        [X]sendFrndReq
         [X]AcceptFrndReqById
-        []rejectFrndReqById
-        []removeFrndFromList
+        [X]rejectFrndReqById
+        [X]removeFrndFromList
 
     []chnlController
-        []createDmChnl
-        []createChnl (mods only)
-        []getUserChnls
-        []getChnlById
-        []reqJoinChnl
-        []addUserToChnl
-        []leaveChnl
+        [X]createDmChnl
+        [X]createChnl
+        [X]getUserChnls
+        [X]getChnlById
+        [X]reqJoinChnl
+        []acceptJoinReq
+        [X]leaveChnl
         []enableModPriv
         []removeUserFromChnl (mod only)
 
