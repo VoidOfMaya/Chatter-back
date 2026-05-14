@@ -96,6 +96,7 @@ model Message{
 }
 model ChannelMember{
   id          Int               @id @default(autoincrement())
+  isMember    Boolean           @default(false)
   isMod       Boolean           @default(false)
   joinedAt    DateTime          @default(now())
   //relations

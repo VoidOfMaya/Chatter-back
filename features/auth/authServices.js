@@ -36,6 +36,7 @@ const register = async (data) =>{
         data:{
             channelId: 1,
             userId: user.id,
+            isMember: true
         }
     })
 }
