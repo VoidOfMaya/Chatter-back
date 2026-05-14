@@ -1,10 +1,10 @@
-import { prisma } from "../../lib/prisma"
+import { prisma } from "../../lib/prisma.js"
 /*
 stand alone route:-
-    [] createChnl
+    [X] createChnl
     [] requestJoinChnl
     [] getAllChnls (user-specific)
-    [] getChnlById (with msgs + members)
+    [X] getChnlById (with msgs + members)
     [] leaveChnl
 
     mod protected:-
@@ -12,13 +12,48 @@ stand alone route:-
     [] addUserToChnl (mod only)
     [] removeUserFromChnl (mod only)
 
-
-nested friend route:-
-    [] createDmChnl (2 users only)
-
 */
-const getDmChannel = async (id) =>{
+const getChannel = async (id) =>{
     const result = await prisma.channel.findUnique({
-        where: {id: id}
+        where: {id: id},
+        include:{
+            members:{
+                select:{
+                    user:{ select:{
+                            id: true,
+                            name: true,
+                            photo: true
+                        }
+                    }
+                }
+            },
+            messages: true,
+        }
     })
+    return result
+}
+//creates new channel and adds creator with mod privilage to its memberslist
+const newChannel = async(creatorId, name)=>{
+    return await prisma.channel.create({
+        data:{
+            name: name,
+            type: 'GROUP',
+            members:{
+                create:{
+                    isMember: true,
+                    isMod: true,
+                    userId: creatorId
+                }
+            }
+        }
+    })
+}
+// mode protected
+
+const service ={
+    newChannel,
+    getChannel
+}
+export{
+    service
 }

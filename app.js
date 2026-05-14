@@ -23,6 +23,7 @@ app.use('/',pipe.indexRouter) // this houses the read rout for post and comments
 app.use('/auth', pipe.authRouter)
 app.use('/user',midware.isAuthenticated,pipe.userRouter)
 app.use('/friend',midware.isAuthenticated,pipe.friendRouter)
+app.use('/channel',midware.isAuthenticated, pipe.channelRouter)
 
 //error handlers:
 //404
