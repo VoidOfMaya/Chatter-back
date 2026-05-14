@@ -60,13 +60,13 @@ const rejectFriendRequest = async (req, res) =>{
     try {
         //expects a friend req.body.requestId
         const {requestId} = req.body
-        const result = await service.rejectFriendRelation(requestId)
+        const result = await service.rejectFriendRequest(requestId)
         res.status(200).json(result)
     } catch (err) {
         res.status(500).json({msg: err.message || 'Internal Server Error'})
     }    
 }
-const removeFriendConnection = async (ewq, res) =>{
+const endFriendship = async (ewq, res) =>{
     try {
         //expects a friend req.body.requestId
         const {requestId} = req.body
@@ -84,7 +84,7 @@ const controller = {
     pendingFriends,
     acceptFriendRequest,
     rejectFriendRequest,
-    removeFriendConnection
+    endFriendship
 }
 
 export{

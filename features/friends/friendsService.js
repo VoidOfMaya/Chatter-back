@@ -1,13 +1,5 @@
 import { prisma } from "../../lib/prisma.js";
-/*
-[]Friend services:- 
-    [] getFrndsByUserId (accepted only)
-    [] getFrndRequests (pending)
-    []createFrndRequest
-    []acceptFrndRequest
-    []rejectFrndRequest
-    []removeFrnd
-*/
+
 //gets friends by id 
 const getActiveFriends = async (id) =>{
    const result = await prisma.userFriends.findMany({
@@ -16,6 +8,7 @@ const getActiveFriends = async (id) =>{
         status: 'ACTIVE'
     },
     select:{
+        id: true,
         friend:{
             select:{
                 id: true,
@@ -54,10 +47,15 @@ const getFriendConnectionById = async (id) =>{
 }
 //creates friend request rakes senderid , revieverId)
 const sendFriendRequest = async (senderId, recieverId) =>{
+    // insures that the smaller number is always first to prevent duplicates in db
+    const normalizeId =(a,b)=>{
+        return a < b? [a, b]: [b, a]; //insures the bigger number is always first
+    }
+    const [userId, friendId] = normalizeId(senderId, recieverId)
     const result = await prisma.userFriends.create({
         data:{        
-            userId: senderId,    
-            friendId: recieverId
+            userId,    
+            friendId
         }
     })
     return result 
@@ -118,9 +116,18 @@ const acceptFriendRequest = async (recordId) =>{
     return {result, channelId}
 }
 //rejects friends request of status pending(deletes request recoord by id)
-const rejectFriendRelation = async (requestId) =>{
+const rejectFriendRequest = async (requestId) =>{
     const result = await prisma.userFriends.delete({where:{id: requestId}})
     return result 
+}
+const endFriendship = async (relationId, channelConnectionId) =>{
+    //delete all records with channel id from channelMember table
+    await prisma.channelMember.deleteMany({where:{channelId: channelConnectionId}});
+    //delete channel with channel id from channel table
+    await prisma.channel.delete({where: {id: channelConnectionId}})
+    //delete all records with relationId  from userFriends table
+    await prisma.userFriends.delete({where: {id: relationId}})
+
 }
 
 //terminates friendship
@@ -130,7 +137,8 @@ const service ={
     sendFriendRequest,
     getPendingFriends,
     acceptFriendRequest,
-    rejectFriendRelation
+    rejectFriendRequest,
+    endFriendship
 
 }
 export{

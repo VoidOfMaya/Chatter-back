@@ -78,7 +78,7 @@ architecture tasks based on layers:
 
     []Channel services:-
         [] createChnl
-        [] createDmChnl (2 users only)
+        [X] createDmChnl (2 users only) * implemented into the accept friend request route
         [] enableModPriv
 
         [] getAllChnls (user-specific)
