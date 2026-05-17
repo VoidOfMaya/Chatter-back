@@ -88,14 +88,11 @@ architecture tasks based on layers:
         [X] leaveChnl
 
         O-> moderated routes
-        [] getJoinRequests
-        [] getJoinRequstbyId?
-        [] acceptRequest
-        [] rejectRequest
-
-        [] addUserToChnl (mod only)
-        [] enableModPriv
-        [] removeUserFromChnl
+        [X] getJoinRequests
+        [X] acceptRequest
+        [X] rejectRequest
+        [X] enableModPriv
+        [X] removeUserFromChnl
 
     []Message services:-
         []createMsg(is reply if og msg id provided)
@@ -173,10 +170,10 @@ architecture tasks based on layers:
         [X]getUserChnls
         [X]getChnlById
         [X]reqJoinChnl
-        []acceptJoinReq
+        [X]acceptJoinReq
         [X]leaveChnl
-        []enableModPriv
-        []removeUserFromChnl (mod only)
+        [X]enableModPriv
+        [X]removeUserFromChnl (mod only)
 
     []msgController
         []createMsg

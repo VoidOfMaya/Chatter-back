@@ -1,22 +1,12 @@
 import { service } from "./channelService.js"
 import { validationResult, matchedData } from "express-validator"
 
+//======= AUTHENTICATED CONTROLLER===========
 const getChannelInfo = async (req, res) =>{
     try {
         const {connectionId} = req.params
         console.log(connectionId)
         const dm = await service.getChannelInfo(Number(connectionId))
-        res.status(200).json(dm)
-    } catch (err) {
-        res.status(500).json({error: err.message || 'Internal Server Error'})
-    }
-}
-
-const getDmChannel = async (req, res) =>{
-    try {
-        const {connectionId} = req.params
-
-        const dm = await service.getChannelbyId(Number(connectionId))
         res.status(200).json(dm)
     } catch (err) {
         res.status(500).json({error: err.message || 'Internal Server Error'})
@@ -33,6 +23,17 @@ const createNewChannel = async (req, res) =>{
         //use user.id to create a new channel, add them to members, and asign as mod
         const newChannel = await service.newChannel(req.user.id, data.name)
         res.status(200).json(newChannel)
+    } catch (err) {
+        res.status(500).json({error: err.message || 'Internal Server Error'})
+    }
+}
+//======= MEMBERS CONTROLLER===========
+const getDmChannel = async (req, res) =>{
+    try {
+        const {connectionId} = req.params
+
+        const dm = await service.getChannelbyId(Number(connectionId))
+        res.status(200).json(dm)
     } catch (err) {
         res.status(500).json({error: err.message || 'Internal Server Error'})
     }
@@ -57,6 +58,57 @@ const joinRequest = async (req, res) =>{
         res.status(500).json({error: err.message || 'Internal Server Error'})
     }    
 }
+//======= MODERATION CONTROLLER===========
+const enableMod = async (req, res) =>{
+    try {
+        const {connectionId} = req.params
+        const {id} = req.user
+        await service.enableMod(connectionId, id)
+        res.status(200).json({ msg:'user has been granted Mod Primissions'})
+    } catch (err) {
+        res.status(500).json({error: err.message || 'Internal Server Error'})
+    }    
+}
+const removeUser = async (req, res) =>{
+    try {
+        const {connectionId} = req.params
+        const {id} = req.user
+        await service.removeUser(connectionId, id)
+        res.status(200).json({msg: 'user removed'})
+    } catch (err) {
+        res.status(500).json({error: err.message || 'Internal Server Error'})
+    }    
+}
+const getAllJoinRequests = async (req, res) =>{
+    try {
+        const {channelId} = req.body
+        const allRequest = await service.getAllJoinRequests(channelId)
+        res.status(200).json(allRequest)
+    } catch (err) {
+        res.status(500).json({error: err.message || 'Internal Server Error'})
+    }    
+}
+const acceptRequest = async (req, res) =>{
+    try {
+        const {connectionId} = req.params
+        const {id} = req.user
+        await service.acceptRequest(connectionId, id)
+        res.status(200).json({msg: 'user accepted'})
+    } catch (err) {
+        res.status(500).json({error: err.message || 'Internal Server Error'})
+    }    
+}
+const rejectRequest = async (req, res) =>{
+    try {
+        const {connectionId} = req.params
+        const {id} = req.user
+        await service.enableMod(connectionId, id)
+        res.status(200).json({msg: 'user rejected'})
+    } catch (err) {
+        res.status(500).json({error: err.message || 'Internal Server Error'})
+    }    
+}
+
 
 
 
@@ -66,7 +118,12 @@ const controller = {
     createNewChannel,
     getChannelInfo,
     leaveChannel,
-    joinRequest
+    joinRequest,
+    enableMod,
+    removeUser,
+    getAllJoinRequests,
+    acceptRequest,
+    rejectRequest
 }
 
 export{

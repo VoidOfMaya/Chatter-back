@@ -66,28 +66,83 @@ const newChannel = async(creatorId, name)=>{
     })
 }
 const leaveChannel = async(channelId, userId) =>{
-    await prisma.channelMember.update({
+    await prisma.channelMember.delete({
         where:{ 
-            AND:[
-                {channelId},
-                {userId}
-            ]
-        },
-        data:{
-            isMember: false,
-            isMod: false
+            AND:[{channelId},{userId}]
         }
     })
     return 'Connection Terminated'
 }
 // ======[MODS ONLY]============
+//enable mod mode
+const enableMod = async (channelId, userId) =>{
+    await prisma.channelMember.update({
+        where:{ 
+            AND:[{channelId},{userId}]
+        },
+        data:{
+            isMod: true
+        }
+    })
+    return 'user is mode set to true'
+}
+//remove from channel
+const removeUser = async (channelId, userId) =>{
+    await prisma.channelMember.delete({
+        where:{
+            AND: [{channelId},{userId}]
+        }
+    })
+    return 'user removed!'
+}
+//get all 
+const getAllJoinRequests = async (channelId) =>{
+    return await prisma.channelMember.findMany({
+        where: {
+            AND:[
+                {channelId},{isMember: false}
+            ]
+        }
+    })
+}
+//reject join request
+const rejectRequest = async (channelId, userId) =>{
+    await prisma.channelMember.delete({
+        where:{
+            AND:[
+                {channelId, userId}
+            ]
+        }
+    })
+    return 'request rejected'
+}
+//acept join request
+const acceptRequest = async (channelId, userId) =>{
+    await prisma.channelMember.update({
+        where:{
+            AND:[
+                {channelId, userId}
+            ]
+        },
+        data:{
+            isMember: true
+        }
+    })
+    return 'request accepted'
+}
 
 const service ={
     newChannel,
     getChannelbyId,
     getChannelInfo,
     leaveChannel,
-    joinRequest
+    joinRequest,
+    enableMod,
+    removeUser,
+    getAllJoinRequests,
+    rejectRequest,
+    acceptRequest
+
 
 }
 export{
