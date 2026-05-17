@@ -30,12 +30,15 @@ const joinRequest = async (channelId, userId) =>{
     return "request created"
 }
 // ======[MEMBERS ONLY]============
+//returns channel relation intity id
 const getChannelbyId = async (id) =>{
     const result = await prisma.channel.findUnique({
         where: {id: id},
         include:{
             members:{
                 select:{
+                    id: true,
+                    isMod: true,
                     user:{ select:{
                             id: true,
                             name: true,
@@ -65,11 +68,11 @@ const newChannel = async(creatorId, name)=>{
         }
     })
 }
-const leaveChannel = async(channelId, userId) =>{
+//takes channel relation intity id
+const leaveChannel = async(relationId) =>{
+
     await prisma.channelMember.delete({
-        where:{ 
-            AND:[{channelId},{userId}]
-        }
+        where:{ id:relationId}
     })
     return 'Connection Terminated'
 }

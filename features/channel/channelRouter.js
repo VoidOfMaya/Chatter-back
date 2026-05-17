@@ -11,8 +11,10 @@ channelRouter.post('/new',validate.newChannel,controller.createNewChannel)
 channelRouter.post('/joinreq',controller.joinRequest)
 
 //======= MEMBERS CONTROLLER===========
-channelRouter.get('/' ,authorize.member ,controller.getDmChannel)
-channelRouter.put('/leave',authorize.member,controller.leaveChannel)
+channelRouter.get('/dm' ,authorize.member ,controller.getChannel) // postman-tested
+//standalone routes:
+channelRouter.get('/' ,authorize.member ,controller.getChannel) // postman-tested
+channelRouter.put('/leave',authorize.member,controller.leaveChannel) // postman-tested
 
 //======= MODERATION CONTROLLER===========
 
