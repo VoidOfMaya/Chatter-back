@@ -27,7 +27,7 @@ channelRouter.post('/mod/newmod',validate.relation ,authorize.mod, controller.en
 
 //====== NESTED MESSAGE ROUTER==========
 
-channelRouter.use('/chatLog', messsageRouter);
+channelRouter.use('/msgs', messsageRouter);
 
 
 
