@@ -61,8 +61,8 @@ const joinRequest = async (req, res) =>{
 const enableMod = async (req, res) =>{
     try {
         const {connectionId} = req.params
-        const {id} = req.user
-        await service.enableMod(Number(connectionId), Number(id))
+        const {relationId} = req.body
+        await service.enableMod(Number(relationId))
         res.status(200).json({ msg:'user has been granted Mod Primissions'})
     } catch (err) {
         res.status(500).json({error: err.message || 'Internal Server Error'})
@@ -70,9 +70,8 @@ const enableMod = async (req, res) =>{
 }
 const removeUser = async (req, res) =>{
     try {
-        const {connectionId} = req.params
-        const {id} = req.user
-        await service.removeUser(Number(connectionId), Number(id))
+        const {relationId} = req.body
+        await service.removeUser(Number(relationId))
         res.status(200).json({msg: 'user removed'})
     } catch (err) {
         res.status(500).json({error: err.message || 'Internal Server Error'})
@@ -89,9 +88,9 @@ const getAllJoinRequests = async (req, res) =>{
 }
 const acceptRequest = async (req, res) =>{
     try {
-        const {connectionId} = req.params
-        const {id} = req.user
-        await service.acceptRequest(Number(connectionId), Number(id))
+        const {relationId} = req.body
+
+        await service.acceptRequest(Number(relationId))
         res.status(200).json({msg: 'user accepted'})
     } catch (err) {
         res.status(500).json({error: err.message || 'Internal Server Error'})
@@ -99,9 +98,8 @@ const acceptRequest = async (req, res) =>{
 }
 const rejectRequest = async (req, res) =>{
     try {
-        const {connectionId} = req.params
-        const {id} = req.user
-        await service.enableMod(Number(connectionId), Number(id))
+        const {relationId} = req.body
+        await service.rejectRequest(Number(relationId))
         res.status(200).json({msg: 'user rejected'})
     } catch (err) {
         res.status(500).json({error: err.message || 'Internal Server Error'})

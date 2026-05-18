@@ -78,11 +78,9 @@ const leaveChannel = async(relationId) =>{
 }
 // ======[MODS ONLY]============
 //enable mod mode
-const enableMod = async (channelId, userId) =>{
+const enableMod = async (relationId) =>{
     await prisma.channelMember.update({
-        where:{ 
-            AND:[{channelId},{userId}]
-        },
+        where:{ id: relationId},
         data:{
             isMod: true
         }
@@ -90,11 +88,9 @@ const enableMod = async (channelId, userId) =>{
     return 'user is mode set to true'
 }
 //remove from channel
-const removeUser = async (channelId, userId) =>{
+const removeUser = async (relationId) =>{
     await prisma.channelMember.delete({
-        where:{
-            AND: [{channelId},{userId}]
-        }
+        where:{id: relationId}
     })
     return 'user removed!'
 }
@@ -109,24 +105,16 @@ const getAllJoinRequests = async (channelId) =>{
     })
 }
 //reject join request
-const rejectRequest = async (channelId, userId) =>{
+const rejectRequest = async (relationId) =>{
     await prisma.channelMember.delete({
-        where:{
-            AND:[
-                {channelId, userId}
-            ]
-        }
+        where:{id: relationId}
     })
     return 'request rejected'
 }
 //acept join request
-const acceptRequest = async (channelId, userId) =>{
+const acceptRequest = async (relationId) =>{
     await prisma.channelMember.update({
-        where:{
-            AND:[
-                {channelId, userId}
-            ]
-        },
+        where:{id: relationId},
         data:{
             isMember: true
         }
