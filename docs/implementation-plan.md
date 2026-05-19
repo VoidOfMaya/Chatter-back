@@ -65,7 +65,7 @@ architecture tasks based on layers:
         [X] get user by id
     [X]Authorization:-
         [X] Only channel members
-        [] Only messag author can edit/delete (or mod)
+        [X] Only messag author can edit/delete (or mod)
         [X] Only mods
         [] Blocked users cannot:
             - send frnd requests
@@ -94,11 +94,11 @@ architecture tasks based on layers:
         [X] enableModPriv
         [X] removeUserFromChnl
 
-    []Message services:-
-        []createMsg(is reply if og msg id provided)
-        []editMsg
-        []deleteMsg
-        []getMsgByChnlId
+    [X]Message services:-
+        [X]createMsg(is reply if og msg id provided)
+        [X]editMsg
+        [X]deleteMsg
+        [X]getMsgByChnlId
 
     [X]Friend services:- 
         [X] getFrndsByUserId (accepted only)
@@ -123,7 +123,7 @@ architecture tasks based on layers:
     [X]user update validation
     [X] chnl creation validation
     [X] frnd request validation
-    [] msg validation
+    [X] msg validation
 
 ## Error handelling
     [] standradize sending error messages with {code: "error_code", err: "relevant error message"}
@@ -140,7 +140,7 @@ architecture tasks based on layers:
     [X]userRouter
     [X]chnlRouter
     [X]frndRouter
-    []msgRouter
+    [X]msgRouter
 
 ## Controllers
     [X]authController
@@ -175,11 +175,11 @@ architecture tasks based on layers:
         [X]enableModPriv
         [X]removeUserFromChnl (mod only)
 
-    []msgController
-        []createMsg
-        []editMsg
-        []deleteMsg
-        []getMsgByChnlId
+    [X]msgController
+        [X]createMsg
+        [X]editMsg
+        [X]deleteMsg
+        [X]getMsgByChnlId
 
 
 
