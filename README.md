@@ -2,6 +2,7 @@
 
 ## Overview:
 Litecome is a simple messaging webapp
+server Documentation and usage:[Documentation](./docs/serverDocs.md)
 
 
 ## Data model
