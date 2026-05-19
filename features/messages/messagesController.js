@@ -1,18 +1,22 @@
 import { service } from "./messageService.js";
 import { matchedData, validationResult } from "express-validator";
 
-const getActiveFriends = async (req, res) =>{
+
+const getChatLog = async (req, res) =>{
+    // data validation
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) return res.status(400).json({errors : errors.array()})
+    const {channelId} = matchedData(req); 
+    //main logic
     try {
-        //takes user id  returns lists of connection ids and users
-        const friend = await service.getActiveFriends(Number(req.user.id))
-        res.status(200).json(friend)
+        return res.status(200).json({channelID: channelId})
     } catch (err) {
         res.status(500).json({msg: err.message || 'Internal Server Error'})
     }
 }
 
 const controller = {
-    getActiveFriends,
+    getChatLog,
 }
 
 export{
