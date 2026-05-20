@@ -11,7 +11,7 @@ friendRouter.get('/:id', validate.friendId ,controller.getFriendConnectionbyId)
 friendRouter.post('/send-request',validate.friendReq,controller.requestFriend)
 friendRouter.put('/accept-request', validate.reqId, controller.acceptFriendRequest)
 friendRouter.delete('/reject-request', validate.reqId, controller.rejectFriendRequest)
-friendRouter.delete('/',controller.endFriendship)
+friendRouter.delete('/',validate.deletionIds,controller.endFriendship)
 
 //nested Dm channel router:-
 friendRouter.use('/:connectionId/dm', channelRouter);

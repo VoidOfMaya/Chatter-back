@@ -15,10 +15,17 @@ const reqId = [
         body('requestId').trim().notEmpty().withMessage('request id must be defined')
         .isInt().toInt().withMessage('request id must be an integer')
 ]
+const deletionIds = [
+    body('relationId').trim().notEmpty().withMessage('request id must be defined')
+        .isInt().toInt().withMessage('request id must be an integer'),
+    body('channelId').trim().notEmpty().withMessage('request id must be defined')
+        .isInt().toInt().withMessage('request id must be an integer'),
+]
 const validate ={
     friendId,
     friendReq,
-    reqId
+    reqId,
+    deletionIds
 }
 
 export{

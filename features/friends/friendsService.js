@@ -120,13 +120,26 @@ const rejectFriendRequest = async (requestId) =>{
     const result = await prisma.userFriends.delete({where:{id: requestId}})
     return result 
 }
-const endFriendship = async (relationId, channelConnectionId) =>{
-    //delete all records with channel id from channelMember table
-    await prisma.channelMember.deleteMany({where:{channelId: channelConnectionId}});
-    //delete channel with channel id from channel table
-    await prisma.channel.delete({where: {id: channelConnectionId}})
-    //delete all records with relationId  from userFriends table
-    await prisma.userFriends.delete({where: {id: relationId}})
+const endFriendship = async (relationId, channelId) =>{
+    
+    await prisma.$transaction([
+        // delets all messages in channel
+        prisma.message.deleteMany({ 
+            where: { channelId: channelId } 
+        }),
+        // delets friends from channel members list
+        prisma.channelMember.deleteMany({ 
+            where: { channelId: channelId } 
+        }),
+        //delets channel itself
+        prisma.channel.delete({ 
+            where: { id: channelId } 
+        }),
+        // delets friendship record
+        prisma.userFriends.delete({ 
+            where: { id: relationId } 
+        })
+    ]);
 
 }
 

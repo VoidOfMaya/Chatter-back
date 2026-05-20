@@ -67,8 +67,8 @@ const rejectFriendRequest = async (req, res) =>{
     //main logic
     try {
         //expects a friend req.body.requestId
-        const result = await service.rejectFriendRequest(requestId)
-        res.status(200).json(result)
+        await service.rejectFriendRequest(requestId)
+        res.status(200).json({msg: 'friend request rejected!'})
     } catch (err) {
         res.status(500).json({msg: err.message || 'Internal Server Error'})
     }    
@@ -77,12 +77,12 @@ const endFriendship = async (req, res) =>{
     // data validation
     const errors = validationResult(req);
     if(!errors.isEmpty()) return res.status(400).json({errors : errors.array()})
-    const {requestId} = matchedData(req); 
+    const {relationId, channelId} = matchedData(req); 
     //main logic
     try {
         //expects a friend req.body.requestId
-        const result = await service.rejectFriendRelation(requestId)
-        res.status(200).json(result)
+        await service.endFriendship(relationId, channelId)
+        res.status(200).json({msg: 'friend removed!'})
     } catch (err) {
         res.status(500).json({msg: err.message || 'Internal Server Error'})
     }      
