@@ -33,14 +33,14 @@ const passportConfig=()=>{
 const isAuthenticated = passport.authenticate('jwt',{session:false});
 
 const validateRtoken = async(req, res, next)=>{
-    const {rToken: token, userId} = req.body;
+    const {rToken: token} = req.body;
     try{
         const dbToken = await  prisma.refreshToken.findUnique({
             where:{token: token}
         })
         console.log('Rtoken validator')
         if(!dbToken){ //validate token existance
-            await wipeTokenByUserId(userId)
+            await wipeTokenByUserId(req.user.id)
             throw new Error ('invalid token use detected')
         }
         if(dbToken){
@@ -49,7 +49,7 @@ const validateRtoken = async(req, res, next)=>{
             if(dbToken.expiresAt < now) throw new Error('Token expired')
             //validates revoke status
             if(dbToken.revoked){ 
-                await wipeTokenByUserId(userId)
+                await wipeTokenByUserId(req.user.id)
                 throw new Error ('invalid token use detected')
             }
             next()
