@@ -49,11 +49,11 @@
   }
   ```
   #### refresh:
-  re-authenticates a new jwt access token, when  provided a valid refresh token, refresh tokens can only be used once to reauthenticate a new access refresh pair`note: always provide the latest refresh token else server will auto log out on user and remove all valid refresh tokens`
+  re-authenticates a new jwt access token, when  provided a valid refresh token, refresh tokens can only be used once to reauthenticate a new access refresh pair`note: always provide the latest refresh token else server will auto wipe the refreshtoken tree for user, on invalid token usageas a security measure`
 
   route:`POST:/auth/refresh`
 
-  expects: `{rToken}`
+  expects: `{userId, rToken}`
 
   returns:
   ```
