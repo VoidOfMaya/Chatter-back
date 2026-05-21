@@ -58,6 +58,7 @@ const token = async (req, res)=>{
         res.status(err.status).json({code: err.code})
     }
 }
+//requires a token thread uuid
 const logout = async (req, res) =>{
     try{
         await service.revokeRtoken(req.body.token);
