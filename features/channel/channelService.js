@@ -4,18 +4,11 @@ import { prisma } from "../../lib/prisma.js"
 const getChannelInfo = async (id) =>{
     const result = await prisma.channel.findUnique({
         where: {id: id},
-        include:{
-            members:{
-                select:{
-                    user:{ select:{
-                            id: true,
-                            name: true,
-                            photo: true
-                        }
-                    }
-                }
-            },
-            messages: true,
+        select:{
+            id: true,
+            name: true,
+            createdAt:true,
+            type: true
         }
     })
     return result

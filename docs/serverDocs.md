@@ -35,6 +35,7 @@
   returns:
   ```
   {
+    threadId,
     user:{
         id,
         email,
@@ -54,11 +55,12 @@
 
   route:`POST:/auth/refresh` (authentication protected)
 
-  expects: `{rToken} and a valid jwt token` and a valid jwt token
+  expects: `{rToken,threadId} and a valid jwt token` and a valid jwt token
 
   returns:
   ```
   {
+    threadId,
     user:{
         id,
         email,
@@ -141,7 +143,6 @@
   }
   ```
   returns: `{msg: 'updated successful'}`
-
   #### GetOtherUsersProfile:
 
   route: `GET:/user/:id`(authentication protected)
@@ -263,4 +264,55 @@
 
   returns: `{msg: 'friend removed!'}`
 ## Channels:-
+
+//======= AUTHENTICATED Routes===========
+  #### get channel info
+
+  route: `GET:/channel/:id/info`
+
+  expects: `valid jwt tojken`
+
+  returns: 
+  ```
+  {
+    id,
+    name,
+    createdAt,
+    type,
+  }
+  ```
+  #### create New Channel
+
+  route: `POST:/channel/new`
+
+  expects: ` valid jwt token, {name}`
+
+  returns:
+  ```
+  {
+    name,
+    type,
+    members,
+  }
+  ```
+  #### join channel Reques
+
+//======= MEMBERS Routes===========
+  #### get dm channel
+
+  route: `GET:/friend/:id/dm`
+
+//standalone routes:
+  #### get group channel
+  #### leave channel
+//======= MODERATION Routes===========
+  #### get all join requests
+  #### accept join request
+  #### reject join request
+  #### remove User
+  #### enable new mod
+
+//====== NESTED MESSAGE ROUTER==========
+// member level authorization
+channelRouter.use('/msgs',validate.channel ,authorize.member , messsageRouter);
 ## Messages:-
