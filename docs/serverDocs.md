@@ -8,6 +8,8 @@
   * access token: is a jwt token utilizing passport.js granting the user access to     resources using the content withing jwt as proof of identity
 
   * refresh token: is a single use custome made encrypted token thats used to re authenticate a new pair of access& refresh tokens
+
+  * refresh token and its threadId is sent to be stored in an httpOnly token for better security and easier  routing
  ### Request Routes:
   #### Register:
    creates a new user acount and automatically join them to a global channel group!.
@@ -34,8 +36,8 @@
   ```
   returns:
   ```
+  cookies:{threadId,refreshToken} //those remain stored in the browser and no need to send as they send automatically
   {
-    threadId,
     user:{
         id,
         email,
@@ -46,7 +48,6 @@
         lastOnline,
     },
     accessToken,
-    refreshToken
   }
   ```
   #### refresh:
@@ -55,12 +56,11 @@
 
   route:`POST:/auth/refresh` (authentication protected)
 
-  expects: `{rToken,threadId} and a valid jwt token` and a valid jwt token
+  expects: `req.cookies:{rToken,threadId}**automatically provided**, and a valid jwt token` 
 
   returns:
   ```
   {
-    threadId,
     user:{
         id,
         email,
@@ -71,8 +71,7 @@
         isOnline,
         createdAt
     },
-    accessToken,
-    refreshToken
+    accessToken
   }
   ```
 ## User:-

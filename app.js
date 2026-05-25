@@ -4,6 +4,7 @@ import cors from 'cors';
 import { pipe } from './features/routerController.js';
 import { midware } from './features/middlewareController.js';
 import passport from 'passport';
+import cookieParser from 'cookie-parser';
 
 //cron token cleaner
 import { tokenCleaner } from './tasks/dbCleaner.js';
@@ -13,9 +14,13 @@ const app = express();
 
 //enables all cores temporarily for testing
 app.use(cors());
+
+//parse cookies
+app.use(cookieParser());
 //parse req string to json
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+
 
 //passport setup goes here:-
 midware.passportConfig();

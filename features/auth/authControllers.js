@@ -3,7 +3,7 @@ import {service} from "./authServices.js";
 
 const newUser = async (req, res) =>{
     //validation handler
-    console.log(req.body)
+    
     const errors = validationResult(req);
     if(!errors.isEmpty()) return res.status(400).json({errors : errors.array()})
     const data = matchedData(req);
@@ -19,11 +19,25 @@ const login = async (req, res)=>{
     //validation handler
     const errors = validationResult(req);
     if(!errors.isEmpty()) return res.status(400).json({errors : errors.array()})
-    const data = matchedData(req);  
+    const data = matchedData(req);
     //logic
     try{
-        const user = await service.login(data);
-        res.status(200).json(user);
+        const result = await service.login(data);
+        //pushes threadID and refreshToken to cookies as an httpOnly
+        res.cookie('refreshToken', result.refreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+        });
+
+        res.cookie('threadId', result.threadId, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            maxAge: 1000 * 60 * 60 * 24 * 7,
+        });
+        res.status(200).json({user: result.user, accessToken: result.accessToken});
     }catch(err){
         res.status(500).json({error: err.message || 'Internal Server Error'})  
     }
@@ -34,13 +48,47 @@ const token = async (req, res)=>{
     //if refresh token invalid return error
 
     try{
-        const refreshToken = await service.validateRToken(req.body.rToken)
-        //token validation happens in an auth midddleware
-        const newRToken = await service.createRToken(refreshToken.userId,req.body.threadId,refreshToken.token)
+        //validating that cookies exist
+        const oldToken = req.cookies.refreshToken
+        const threadId = req.cookies.threadId
+        if(!oldToken|| !threadId){
+            return res.status(401).json({
+                code: 'Missing Credentials',
+            })
+        }
+
+        //validate token in db
+       const refreshToken = await service.validateRToken(oldToken)
+        // create new refreshToken
+    const newRToken = await service.createRToken(refreshToken.userId,threadId,oldToken)
+        //create new accessToken
         const newAToken = await service.createAToken(refreshToken.userId )
         const user = await service.getUserById(refreshToken.userId)
+        //updates cookies
+        // overwrite cookies automatically
+        
+        res.cookie(
+            'refreshToken',
+            newRToken,
+            {
+                httpOnly: true,
+                secure:process.env.NODE_ENV ==='production',
+                sameSite: 'lax',
+                maxAge:1000 *60 *60 *24 *7,
+            }
+        );
+        res.cookie(
+            'threadId',
+            threadId,
+            {
+                httpOnly: true,
+                secure:process.env.NODE_ENV ==='production',
+                sameSite: 'lax',
+                maxAge:1000 *60 *60 *24 *7,
+            }
+        );
+        //returns user and new access token
         return res.status(201).json({
-            threadId: req.body.threadId,
             user:{
                 id: user.id,
                 email: user.email,
@@ -52,18 +100,28 @@ const token = async (req, res)=>{
                 createdAt: user.createdAt
             } ,
             accessToken: newAToken, 
-            refreshToken: newRToken
         })
     }catch(err){
         console.log(err)
-        res.status(err.status).json({code: err.code})
+        res.status(err.status).json({code: err.code || 'Internall server Error'})
     }
 }
 //requires a token thread uuid
 const logout = async (req, res) =>{
     try{
+        //deletes
+        res.clearcookie('refreshToken', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: 'lex',
+        });
+        res.clearcookie('threadId', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: 'lex',
+        });
         await service.removeTokenThread(req.body.threadId);
-        res.status(200).json({message: 'A&T token thread removed'})
+        res.status(200).json({message: 'Logged Out'})
     }catch(err){
         res.status(500).json({code: err})
     }

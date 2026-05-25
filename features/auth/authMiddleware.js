@@ -33,7 +33,7 @@ const passportConfig=()=>{
 const isAuthenticated = passport.authenticate('jwt',{session:false});
 
 const validateRtoken = async(req, res, next)=>{
-    const {rToken: token} = req.body;
+    const token = req.cookies.refreshToken;
     try{
         const dbToken = await  prisma.refreshToken.findUnique({
             where:{token: token}
