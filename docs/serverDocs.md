@@ -141,7 +141,10 @@
     photo,
   }
   ```
-  returns: `{msg: 'updated successful'}`
+  returns: 
+  ```  
+  {name, bio, photo}
+  ```
   #### GetOtherUsersProfile:
 
   route: `GET:/user/:id`(authentication protected)
