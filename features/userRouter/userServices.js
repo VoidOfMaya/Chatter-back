@@ -90,7 +90,7 @@ const getUser= async(id)=>{
 }
 const editCurrentUser = async( id, data) =>{
     const user = await prisma.user.findUnique({where:{id: id}})
-    await prisma.user.update({
+    return await prisma.user.update({
         where: {id: id},
         data:{
             name: data.name ===''? user.name: data.name,

@@ -30,8 +30,12 @@ const editCurrentUser = async (req, res)=>{
     const data = matchedData(req);  
     console.log(data)
     try {
-        await service.editCurrentUser(req.user.id,data)
-        res.status(200).json({msg: 'updated successful'})
+        const result = await service.editCurrentUser(req.user.id,data)
+        res.status(200).json({
+            name:result.name,
+            bio:result.bio,
+            photo:result.photo
+        })
     } catch (err) {
         res.status(500).json({msg: err.message || 'internal server error'})      
     }
