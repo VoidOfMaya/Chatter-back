@@ -306,36 +306,11 @@
   return `"request created"`
   
   //======= MEMBERS Routes===========
-  #### get dm channel
-  route: `GET:/friend/:id/dm`
 
-  expects: ` a valid  jwt token + req.param:{channelID}`
-  
-  returns:
-  ```
-  {
-    id,
-    name,
-    createdAt,
-    type,
-    memeber[
-             {
-            id,    <-denotes the relation entity id
-            isMod, <- irrelevant to dm channels
-            user{
-                id,
-                name,
-                photo
-            }
-        }
-    ],
-    messages[],
-  }
-  ```
-  #### get group channel
+  #### get channel data
 
 
-  route: `GET:/friend/:id`
+  route: `GET:/Channel/:id`
 
   expects: ` a valid  jwt token + req.param:{channelID}`
   
