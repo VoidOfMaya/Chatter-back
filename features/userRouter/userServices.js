@@ -5,7 +5,10 @@ const populateDashboard = async (userId) =>{
         where:{id: userId},
         include: {            
             channels:{
-                include:{channel: true}
+            
+                include:{
+                    channel:true
+                }
             },
             friendSent:{
                 where:{status: 'ACTIVE'},
