@@ -17,12 +17,20 @@ const getChatLog = async (req, res) =>{
 }
 const submitMessage = async (req, res) =>{
     // data validation
+    console.log('logging message controller data ')
     const errors = validationResult(req);
     if(!errors.isEmpty()) return res.status(400).json({errors : errors.array()})
-    const {channelId, content, parentId} = matchedData(req); 
+    const {channelId}= req.params //sanetized by channel validations!
+    const {id} = req.user //gets current user id
+    const {content} = matchedData(req); 
+    const responseTo = !typeof req.body.parentId === Number? null : req.body.parentId
+    console.log(req.body)
+    console.log(`channelId: ${channelId}, userId: ${id}`)
+    console.log(`response to: ${responseTo}, content: ${content}`)
     //main logic
     try {
-        await service.createMessage(channelId,Number(req.user.id), content, parentId)
+        const result = await service.createMessage(Number(channelId),id, content, responseTo)
+        console.log(result)
         return res.status(200).json({msg: 'message created!'})
     } catch (err) {
         res.status(500).json({msg: err.message || 'Internal Server Error'})
