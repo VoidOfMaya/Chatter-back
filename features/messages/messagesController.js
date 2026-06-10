@@ -29,8 +29,7 @@ const submitMessage = async (req, res) =>{
     console.log(`response to: ${responseTo}, content: ${content}`)
     //main logic
     try {
-        const result = await service.createMessage(Number(channelId),id, content, responseTo)
-        console.log(result)
+        await service.createMessage(Number(channelId),id, content, responseTo)
         return res.status(200).json({msg: 'message created!'})
     } catch (err) {
         res.status(500).json({msg: err.message || 'Internal Server Error'})
