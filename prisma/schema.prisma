@@ -63,8 +63,8 @@ model UserFriends{
   friendId    Int
   friend      User              @relation("userFriendReceived",fields: [friendId],references: [id])
   
-  channelId   Int
-  channel     Channel           @relation( fields: [channelId], references: [id])
+  channelId   Int?
+  channel     Channel?           @relation( fields: [channelId], references: [id])
   @@unique([userId, friendId])
   @@index([userId])
   @@index([friendId])
