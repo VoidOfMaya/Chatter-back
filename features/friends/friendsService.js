@@ -82,7 +82,9 @@ const getPendingFriends = async (id) =>{
             },
             user:{
                 select:{
-                    id: true
+                    id: true,
+                    name: true,
+                    photo: true
                 }
             }
         }
