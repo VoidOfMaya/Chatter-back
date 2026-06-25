@@ -64,7 +64,9 @@ const sendFriendRequest = async (senderId, recieverId) =>{
 const getPendingFriends = async (id) =>{
     const result = await prisma.userFriends.findMany({
         where: {
-            userId : id,
+            OR:[{userId : id},
+                {friendId: id}
+            ],
             status: 'PENDING'
         },
         select: {
