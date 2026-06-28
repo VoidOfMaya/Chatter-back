@@ -49,6 +49,7 @@ const populateDashboard = async (userId) =>{
         result.friendSent.forEach(connection =>{
             const friend = connection.friend;
             array.push({
+                connectionId: connection.id,
                 channelId: connection.channelId,
                 id: friend.id, 
                 name: friend.name,
@@ -64,6 +65,7 @@ const populateDashboard = async (userId) =>{
             const exists = array.some(connection => connection.id === friend.id);
             if(!exists){
                 array.push({
+                    connectionId: connection.id,
                     channelId: connection.channelId,
                     id: friend.id,
                     name: friend.name,
