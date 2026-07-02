@@ -118,6 +118,15 @@ const getAllJoinRequests = async (channelId) =>{
             AND:[
                 {channelId},{isMember: false}
             ]
+        },
+        include:{
+            user:{
+                select:{
+                    id: true,
+                    photo: true,
+                    name: true,
+                }
+            }
         }
     })
 }
