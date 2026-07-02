@@ -88,7 +88,6 @@ const newChannel = async(creatorId, name)=>{
 }
 //takes channel relation intity id
 const leaveChannel = async(relationId) =>{
-
     await prisma.channelMember.delete({
         where:{ id:Number(relationId)}
     })

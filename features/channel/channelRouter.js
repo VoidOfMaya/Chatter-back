@@ -14,7 +14,7 @@ channelRouter.post('/joinreq',validate.channel,controller.joinRequest) // postma
 //======= MEMBERS CONTROLLER===========
 //standalone routes:
 channelRouter.get('/' ,validate.channel ,authorize.member ,controller.getChannel) // postman-tested
-channelRouter.delete('/leave' ,validate.relation ,authorize.member ,controller.leaveChannel) // postman-tested
+channelRouter.delete('/leave' ,validate.relation,validate.channel ,authorize.member ,controller.leaveChannel) // postman-tested
 
 //======= MODERATION CONTROLLER===========
 

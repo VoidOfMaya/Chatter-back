@@ -5,6 +5,7 @@ const member = async (req, res, next) =>{
     const errors = validationResult(req);
     if(!errors.isEmpty()) return res.status(400).json({errors : errors.array()})
     const {channelId} = matchedData(req); 
+    console.log(`channel id : ${channelId}`)
     console.log(`user id: ${req.user.id}, connection id: ${channelId}`)
     const result = await prisma.channelMember.findFirst({
         where:{AND:[
