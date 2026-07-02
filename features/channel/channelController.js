@@ -117,7 +117,7 @@ const acceptRequest = async (req, res) =>{
     const data = matchedData(req); 
     //main logic
     try {
-        await service.acceptReques(data.relationId)
+        await service.acceptRequest(data.relationId)
         res.status(200).json({msg: 'user accepted'})
     } catch (err) {
         res.status(500).json({error: err.message || 'Internal Server Error'})

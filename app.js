@@ -47,7 +47,7 @@ app.use((req, res, next)=>{
 app.use((err, req, res, next) => {
   console.error(err);
   console.log(req.method, req.originalUrl);
-  res.status(err.status || 500).json({
+  return res.status(err.status || 500).json({
     message: err.message || 'Internal Server Error'
   });
 });
