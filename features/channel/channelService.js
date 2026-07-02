@@ -90,7 +90,7 @@ const newChannel = async(creatorId, name)=>{
 const leaveChannel = async(relationId) =>{
 
     await prisma.channelMember.delete({
-        where:{ id:relationId}
+        where:{ id:Number(relationId)}
     })
     return 'Connection Terminated'
 }
