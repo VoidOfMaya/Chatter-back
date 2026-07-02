@@ -18,11 +18,11 @@ channelRouter.delete('/leave' ,validate.relation,validate.channel ,authorize.mem
 
 //======= MODERATION CONTROLLER===========
 
-channelRouter.get('/mod/joinreq',validate.channel ,authorize.mod ,controller.getAllJoinRequests)// postman-tested
-channelRouter.put('/mod/acceptreq',validate.relation ,authorize.mod ,controller.acceptRequest)// postman-tested
+channelRouter.get('/mod/joinreq',validate.channel,authorize.mod ,controller.getAllJoinRequests)// postman-tested
+channelRouter.put('/mod/acceptreq',validate.relation ,validate.channel ,authorize.mod ,controller.acceptRequest)// postman-tested
 channelRouter.put('/mod/rejectreq',validate.relation ,authorize.mod ,controller.rejectRequest)// postman-tested
-channelRouter.delete('/mod/removeuser',validate.relation ,authorize.mod ,controller.removeUser)// postman-tested
-channelRouter.post('/mod/newmod',validate.relation ,authorize.mod ,controller.enableMod)// postman-tested
+channelRouter.delete('/mod/removeuser',validate.relation ,validate.channel ,authorize.mod ,controller.removeUser)// postman-tested
+channelRouter.post('/mod/newmod',validate.relation ,validate.channel ,authorize.mod ,controller.enableMod)// postman-tested
 
 //====== NESTED MESSAGE ROUTER==========
 // member level authorization
