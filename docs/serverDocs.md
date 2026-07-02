@@ -336,7 +336,7 @@
   }
   ```
   #### leave channel
-  route: `PUT:/channel/:id/leave`
+  route: `DELETE:/channel/:id/leave`
   expects: ` jwt token, req.param:{channelId}, req.body{relationId}`
   returns: `{msg: "Connection Terminated"}` 
 //======= MODERATION Routes===========
