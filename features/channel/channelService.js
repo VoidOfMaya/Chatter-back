@@ -133,14 +133,14 @@ const getAllJoinRequests = async (channelId) =>{
 //reject join request
 const rejectRequest = async (relationId) =>{
     await prisma.channelMember.delete({
-        where:{id: relationId}
+        where:{id: Number(relationId)}
     })
     return 'request rejected'
 }
 //acept join request
 const acceptRequest = async (relationId) =>{
     await prisma.channelMember.update({
-        where:{id: relationId},
+        where:{id: Number(relationId)},
         data:{
             isMember: true
         }
