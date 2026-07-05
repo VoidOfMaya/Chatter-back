@@ -372,6 +372,8 @@
   this is a temporary measure to insure groups dont get orphaned
   and locked out of moderation tooling due to a0 mods edge case, untill an owner/mod/user
   premissions higherarchy is implemented (documentaiton on issue available on git please visit issue section to get updated)
+
+  function and purpose: this serves as a single source of truth validation method for mod on mod actions, where if mod attempts to leave or remove mod abilties win groups with only 1 moderatore then it will deny said action and prompt user to transfer mod ability to an other user!
     route:`GET:/channel/:id/modstat`
     expects:`jwt token + req.param{channelId} + relationId + modauth`
     returns`{status: boolean}`
