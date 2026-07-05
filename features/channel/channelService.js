@@ -32,6 +32,7 @@ const getChannelbyId = async (id) =>{
                 select:{
                     id: true,
                     isMod: true,
+                    isMember:true,
                     user:{ select:{
                             id: true,
                             name: true,
