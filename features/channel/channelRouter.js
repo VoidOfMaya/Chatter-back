@@ -20,7 +20,7 @@ channelRouter.delete('/leave' ,validate.relation,validate.channel ,authorize.mem
 
 channelRouter.get('/mod/joinreq',validate.channel,authorize.mod ,controller.getAllJoinRequests)// postman-tested
 channelRouter.put('/mod/acceptreq',validate.relation ,validate.channel ,authorize.mod ,controller.acceptRequest)// postman-tested
-channelRouter.put('/mod/rejectreq',validate.relation ,authorize.mod ,controller.rejectRequest)// postman-tested
+channelRouter.delete('/mod/rejectreq',validate.relation ,authorize.mod ,controller.rejectRequest)// postman-tested
 channelRouter.delete('/mod/removeuser',validate.relation ,validate.channel ,authorize.mod ,controller.removeUser)// postman-tested
 channelRouter.post('/mod/newmod',validate.relation ,validate.channel ,authorize.mod ,controller.enableMod)// postman-tested
 
