@@ -368,6 +368,13 @@
   route:`DELETE://channel/:id/mod/removeuser`
   expects:`jwt token + req.param{channelId} + relationId + modauth`
   returns:`{msg: "user removed!"}`
+  #### mod on mod validation
+  this is a temporary measure to insure groups dont get orphaned
+  and locked out of moderation tooling due to a0 mods edge case, untill an owner/mod/user
+  premissions higherarchy is implemented (documentaiton on issue available on git please visit issue section to get updated)
+    route:`GET:/channel/:id/modstat`
+    expects:`jwt token + req.param{channelId} + relationId + modauth`
+    returns`{status: boolean}`
   #### enable new mod
   route:`POST:/channel/:id/newmod`
   expects:`jwt token + req.param{channelId} + relationId + modauth`

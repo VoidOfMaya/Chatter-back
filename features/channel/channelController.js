@@ -81,9 +81,9 @@ const checkModStat = async(req,res)=>{
     //main logic
     try {
         const result = await service.modstat(data.relationId)
-        res.status(200).json({ status: result, msg:''})
+        return res.status(200).json({ status: result})   
     } catch (err) {
-        res.status(500).json({error: err.message || 'Internal Server Error'})
+       return res.status(500).json({error: err.message || 'Internal Server Error'})
     }    
 }
 const enableMod = async (req, res) =>{
