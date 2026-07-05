@@ -19,6 +19,7 @@ channelRouter.delete('/leave' ,validate.relation,validate.channel ,authorize.mem
 //======= MODERATION CONTROLLER===========
 
 channelRouter.get('/mod/joinreq',validate.channel,authorize.mod ,controller.getAllJoinRequests)// postman-tested
+channelRouter.get('/mod/modstat',validate.channel,authorize.mod ,controller.checkModStat)
 channelRouter.put('/mod/acceptreq',validate.relation ,validate.channel ,authorize.mod ,controller.acceptRequest)// postman-tested
 channelRouter.delete('/mod/rejectreq',validate.relation,validate.channel ,authorize.mod ,controller.rejectRequest)// postman-tested
 channelRouter.delete('/mod/removeuser',validate.relation ,validate.channel ,authorize.mod ,controller.removeUser)// postman-tested

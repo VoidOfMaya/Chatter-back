@@ -71,6 +71,21 @@ const joinRequest = async (req, res) =>{
     }    
 }
 //======= MODERATION CONTROLLER===========
+const checkModStat = async(req,res)=>{
+    //single source of truth for mod on mod operations
+    //reject removal or leave request if only one mod exists(prevents locking a gorup out of mod abilities)
+    // data validation
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) return res.status(400).json({errors : errors.array()})
+    const data = matchedData(req); 
+    //main logic
+    try {
+        const result = await service.modstat(data.relationId)
+        res.status(200).json({ status: result, msg:''})
+    } catch (err) {
+        res.status(500).json({error: err.message || 'Internal Server Error'})
+    }    
+}
 const enableMod = async (req, res) =>{
     // data validation
     const errors = validationResult(req);
@@ -147,6 +162,7 @@ const controller = {
     getChannelInfo,
     leaveChannel,
     joinRequest,
+    checkModStat,
     enableMod,
     removeUser,
     getAllJoinRequests,

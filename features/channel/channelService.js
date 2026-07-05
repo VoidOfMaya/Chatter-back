@@ -95,6 +95,20 @@ const leaveChannel = async(relationId) =>{
     return 'Connection Terminated'
 }
 // ======[MODS ONLY]============
+//validates mod on mod acctions
+const modstat = async (id) =>{
+    const mods = await prisma.channelMember.count({
+        where: {
+            AND:[
+                {channelId: Number(id)},
+                {isMember: true},
+                {isMod: true}
+            ]
+        }
+    })
+    if(mods > 1) return true
+    return false
+}
 //enable mod mode
 const enableMod = async (relationId) =>{
     await prisma.channelMember.update({
@@ -155,6 +169,7 @@ const service ={
     getChannelInfo,
     leaveChannel,
     joinRequest,
+    modstat,
     enableMod,
     removeUser,
     getAllJoinRequests,
