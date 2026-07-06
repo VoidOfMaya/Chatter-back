@@ -112,7 +112,7 @@ const disableMod = async (req, res) =>{
     const data = matchedData(req); 
     //main logic
     try {
-        await service.enableMod(data.relationId)
+        await service.disableMod(data.relationId)
         res.status(200).json({ msg:'user Mod Primissions revoked!'})
     } catch (err) {
         res.status(500).json({error: err.message || 'Internal Server Error'})
