@@ -5,7 +5,9 @@ const populateDashboard = async (userId) =>{
         where:{id: userId},
         include: {            
             channels:{
-            
+                where:{
+                    isMember: true
+                },
                 include:{
                     channel:true
                 }
