@@ -87,7 +87,7 @@ const checkModStat = async(req,res)=>{
         }else{
             message = 'please insure group has 1 or more moderators befor terminating mod premsssions'
         }
-        return res.status(200).json({ status: result, msg:{message}})   
+        return res.status(200).json({ status: result,message})   
     } catch (err) {
        return res.status(500).json({error: err.message || 'Internal Server Error'})
     }    
