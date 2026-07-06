@@ -122,7 +122,7 @@ const enableMod = async (relationId) =>{
 //disable mod
 const disableMod = async (relationId) =>{
     await prisma.channelMember.update({
-        where:{ id: relationId},
+        where:{ id: Number(relationId)},
         data:{
             isMod: false
         }
