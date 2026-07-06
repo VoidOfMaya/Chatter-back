@@ -105,6 +105,19 @@ const enableMod = async (req, res) =>{
         res.status(500).json({error: err.message || 'Internal Server Error'})
     }    
 }
+const disableMod = async (req, res) =>{
+    // data validation
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) return res.status(400).json({errors : errors.array()})
+    const data = matchedData(req); 
+    //main logic
+    try {
+        await service.enableMod(data.relationId)
+        res.status(200).json({ msg:'user Mod Primissions revoked!'})
+    } catch (err) {
+        res.status(500).json({error: err.message || 'Internal Server Error'})
+    }    
+}
 const removeUser = async (req, res) =>{
     // data validation
     const errors = validationResult(req);
@@ -170,6 +183,7 @@ const controller = {
     joinRequest,
     checkModStat,
     enableMod,
+    disableMod,
     removeUser,
     getAllJoinRequests,
     acceptRequest,

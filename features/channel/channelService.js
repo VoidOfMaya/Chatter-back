@@ -119,6 +119,16 @@ const enableMod = async (relationId) =>{
     })
     return 'mod privillage enabled'
 }
+//disable mod
+const disableMod = async (relationId) =>{
+    await prisma.channelMember.update({
+        where:{ id: relationId},
+        data:{
+            isMod: false
+        }
+    })
+    return 'mod privillage enabled'
+}
 //remove from channel
 const removeUser = async (relationId) =>{
     await prisma.channelMember.delete({
@@ -171,6 +181,7 @@ const service ={
     joinRequest,
     modstat,
     enableMod,
+    disableMod,
     removeUser,
     getAllJoinRequests,
     rejectRequest,

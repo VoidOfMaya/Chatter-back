@@ -23,8 +23,8 @@ channelRouter.get('/mod/modstat',validate.channel,authorize.mod ,controller.chec
 channelRouter.put('/mod/acceptreq',validate.relation ,validate.channel ,authorize.mod ,controller.acceptRequest)// postman-tested
 channelRouter.delete('/mod/rejectreq',validate.relation,validate.channel ,authorize.mod ,controller.rejectRequest)// postman-tested
 channelRouter.delete('/mod/removeuser',validate.relation ,validate.channel ,authorize.mod ,controller.removeUser)// postman-tested
-channelRouter.post('/mod/newmod',validate.relation ,validate.channel ,authorize.mod ,controller.enableMod)// postman-tested
-
+channelRouter.put('/mod/enablemod',validate.relation ,validate.channel ,authorize.mod ,controller.enableMod)// postman-tested
+channelRouter.put('/mod/disablemod',validate.relation ,validate.channel ,authorize.mod ,controller.disableMod)// postman-tested
 //====== NESTED MESSAGE ROUTER==========
 // member level authorization
 channelRouter.use('/msgs',validate.channel ,authorize.member , messsageRouter);

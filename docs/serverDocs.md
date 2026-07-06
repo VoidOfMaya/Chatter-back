@@ -378,9 +378,13 @@
     expects:`jwt token + req.param{channelId} + modauth`
     returns`{status: boolean}`
   #### enable new mod
-  route:`POST:/channel/:id/newmod`
+  route:`PUT:/channel/:id/enablemod`
   expects:`jwt token + req.param{channelId} + relationId + modauth`
   returns`{msg: "mod privillage enabled"}`
+  #### disable new mod
+  route:`PUT:/channel/:id/disablemod`
+  expects:`jwt token + req.param{channelId} + relationId + modauth`
+  returns`{msg: "mod privillage disabled"}`
 
 ## Messages:-
   #### create message 
