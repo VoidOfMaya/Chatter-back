@@ -375,7 +375,7 @@
 
   function and purpose: this serves as a single source of truth validation method for mod on mod actions, where if mod attempts to leave or remove mod abilties win groups with only 1 moderatore then it will deny said action and prompt user to transfer mod ability to an other user!
     route:`GET:/channel/:id/modstat`
-    expects:`jwt token + req.param{channelId} + relationId + modauth`
+    expects:`jwt token + req.param{channelId} + modauth`
     returns`{status: boolean}`
   #### enable new mod
   route:`POST:/channel/:id/newmod`

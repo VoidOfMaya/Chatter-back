@@ -80,7 +80,7 @@ const checkModStat = async(req,res)=>{
     const data = matchedData(req); 
     //main logic
     try {
-        const result = await service.modstat(data.relationId)
+        const result = await service.modstat(data.channelId)
         let message;
         if(result){
             message = 'OK'
