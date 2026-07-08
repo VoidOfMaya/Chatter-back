@@ -32,7 +32,6 @@ const createNewChannel = async (req, res) =>{
 //======= MEMBERS CONTROLLER===========
 const getChannel = async (req, res) =>{
     // data validation
-    console.log(`accessing channel getter controller`)
     const errors = validationResult(req);
     if(!errors.isEmpty()) return res.status(400).json({errors : errors.array()})
     const {channelId} = matchedData(req); 

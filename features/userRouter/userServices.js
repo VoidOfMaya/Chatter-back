@@ -30,8 +30,6 @@ const populateDashboard = async (userId) =>{
         }
         /**/
     })
-    console.log('unsanitized data: ')
-    console.log(result)
     const sanitizedUserData = () =>{
         return {id: result.id, name: result.name, bio: result.bio,photo: result.photo}
     }
@@ -85,9 +83,7 @@ const populateDashboard = async (userId) =>{
         channels: sanitizedChannelData(),
         friends: sanitizedFriendData()
     } 
-    //requires data normalization
-    console.log('Sanetized data:')
-    console.log(outboundData)
+
     return outboundData
 }
 const getUser= async(id)=>{

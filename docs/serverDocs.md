@@ -74,6 +74,19 @@
     accessToken
   }
   ```
+  ### logout:-
+  logout simply looks for the 
+
+  route:`DELETE:/auth/logout` (authentication protected)
+
+  expects: `toke bearer : accessToken, cookies threadId` 
+
+  returns:
+  ```
+  {
+    message: 'session thread removed'
+  }
+  ```
 ## User:-
   #### Get user/Me:
    is a compiset route accessing multiple resources and entities to populate the users dathboboard with all relevant data!

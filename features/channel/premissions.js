@@ -5,8 +5,6 @@ const member = async (req, res, next) =>{
     const errors = validationResult(req);
     if(!errors.isEmpty()) return res.status(400).json({errors : errors.array()})
     const {channelId} = matchedData(req); 
-    console.log(`channel id : ${channelId}`)
-    console.log(`user id: ${req.user.id}, connection id: ${channelId}`)
     const result = await prisma.channelMember.findFirst({
         where:{AND:[
                 {channelId:Number(channelId)},
@@ -14,7 +12,6 @@ const member = async (req, res, next) =>{
             ]   
         }
     })
-    console.log(result)
     if(!result) return res.status(404).json({msg: 'connection does not exist'})
     if(!result.isMember)return res.status(403).json({msg: 'Access Denied!'})
     next();
@@ -24,7 +21,6 @@ const mod = async (req, res, next) =>{
     const errors = validationResult(req);
     if(!errors.isEmpty()) return res.status(400).json({errors : errors.array()})
     const {channelId} = matchedData(req); 
-    console.log(`user id: ${req.user.id}, connection id: ${channelId}`)
     const result = await prisma.channelMember.findFirst({
         where:{AND:[
                 {channelId:channelId},

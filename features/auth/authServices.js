@@ -73,13 +73,14 @@ const login = async (data) =>{
     }
 }
 const createAToken = async (userId, threadId)=>{
+    console.log('new A token issued')
     const user = await prisma.user.findUnique({
         where:{id: Number(userId)}
     });
     const accessToken = jwt.sign(
         {id: user.id, email: user.email},
         process.env.APIKEY,
-        {expiresIn: '15m'}
+        {expiresIn: '30s'}
     )
     return accessToken
 }
@@ -170,7 +171,7 @@ const revokeRtoken = async (token)=>{
 }
 const removeTokenThread = async ( threadId) =>{
     await prisma.refreshToken.deleteMany({
-        where:{threadId: threadId}
+        where:{threadId: Number(threadId)}
     })
 }
 const service ={

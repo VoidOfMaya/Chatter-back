@@ -46,14 +46,12 @@ const login = async (req, res)=>{
 const token = async (req, res)=>{
     //if refresh token valid  create new access token & refresh token
     //if refresh token invalid return error
-    console.log('Refresh controller')
-    console.log(req.cookie);
+    console.log('authenticate user controller')
     try{
         //validating that cookies exist
         const oldToken = req.cookies.refreshToken
         const threadId = req.cookies.threadId
         console.log('refresh rout controller')
-        console.log(`token: ${oldToken} \n threadId: ${threadId}`)
         if(!oldToken|| !threadId){
             return res.status(401).json({
                 code: 'Missing Credentials',
@@ -63,13 +61,14 @@ const token = async (req, res)=>{
         //validate token in db
        const refreshToken = await service.validateRToken(oldToken)
         // create new refreshToken
-    const newRToken = await service.createRToken(refreshToken.userId,threadId,oldToken)
+        console.log('Issuing new tokens')
+        const newRToken = await service.createRToken(refreshToken.userId,threadId,oldToken)
         //create new accessToken
         const newAToken = await service.createAToken(refreshToken.userId )
         const user = await service.getUserById(refreshToken.userId)
         //updates cookies
         // overwrite cookies automatically
-        
+        console.log('renewing cookies')
         res.cookie(
             'refreshToken',newRToken,{
                 httpOnly: true,
@@ -87,6 +86,7 @@ const token = async (req, res)=>{
             }
         );
         //returns user and new access token
+        console.log('shipping fresh user data')
         return res.status(201).json({
             user:{
                 id: user.id,
@@ -120,7 +120,7 @@ const logout = async (req, res) =>{
             sameSite: 'lex',
         });
         await service.removeTokenThread(req.body.threadId);
-        res.status(200).json({message: 'Logged Out'})
+        res.status(200).json({message: 'session thread removed'})
     }catch(err){
         res.status(500).json({code: err})
     }

@@ -9,19 +9,20 @@ import cookieParser from 'cookie-parser';
 //cron token cleaner
 import { tokenCleaner } from './tasks/dbCleaner.js';
 
-
 const app = express();
 
-//enables all cores temporarily for testing
 app.use(cors({
-  origin:'http://localhost:5173',
+  origin:[
+    'http://localhost:5173',
+    'http://localhost:4173',
+  ],
+  
   credentials: true,
 }));
 
 //parse req string to json
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-
 
 //passport setup goes here:-
 midware.passportConfig();
