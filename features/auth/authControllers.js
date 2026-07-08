@@ -109,22 +109,22 @@ const token = async (req, res)=>{
 const logout = async (req, res) =>{
     try{
         const threadId = req.cookies.threadId;
-        await service.removeTokenThread(threadId);
+        const result = await service.removeTokenThread(threadId);
         console.log('refreshtoken family deleted')
-        res.clearcookie('refreshToken', {
+        res.clearCookie('refreshToken', {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: 'lex',
+            sameSite: 'lax',
         });
-        res.clearcookie('threadId', {
+        res.clearCookie('threadId', {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: 'lex',
+            sameSite: 'lax',
         });
         console.log('cookies cleared!')
-        res.status(200).json({message: 'session thread removed'})
+        res.status(200).json(result)
     }catch(err){
-        res.status(500).json({code: err})
+        res.status(500).json({error: err.message || 'Internal Server Error'})
     }
 }
 const controller ={
