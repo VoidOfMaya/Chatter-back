@@ -171,7 +171,7 @@ const revokeRtoken = async (token)=>{
 }
 const removeTokenThread = async ( threadId) =>{
     await prisma.refreshToken.deleteMany({
-        where:{threadId: Number(threadId)}
+        where:{threadId: threadId}
     })
 }
 const service ={
