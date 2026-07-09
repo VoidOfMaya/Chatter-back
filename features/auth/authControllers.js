@@ -28,6 +28,7 @@ const login = async (req, res)=>{
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'lax',
+            path:'/',
             maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
         });
 
@@ -35,6 +36,7 @@ const login = async (req, res)=>{
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'lax',
+            path:'/',
             maxAge: 1000 * 60 * 60 * 24 * 7,
         });
         res.status(200).json({user: result.user, accessToken: result.accessToken});
@@ -74,6 +76,7 @@ const token = async (req, res)=>{
                 httpOnly: true,
                 secure:process.env.NODE_ENV ==='production',
                 sameSite: 'lax',
+                path:'/',
                 maxAge:1000 *60 *60 *24 *7,
             }
         );
@@ -82,6 +85,7 @@ const token = async (req, res)=>{
                 httpOnly: true,
                 secure:process.env.NODE_ENV ==='production',
                 sameSite: 'lax',
+                path:'/',
                 maxAge:1000 *60 *60 *24 *7,
             }
         );
@@ -114,11 +118,13 @@ const logout = async (req, res) =>{
         res.clearCookie('refreshToken', {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
+            path:'/',
             sameSite: 'lax',
         });
         res.clearCookie('threadId', {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
+            path:'/',
             sameSite: 'lax',
         });
         console.log('cookies cleared!')
