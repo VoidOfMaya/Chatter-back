@@ -81,7 +81,7 @@ const createAToken = async (userId, threadId)=>{
     const accessToken = jwt.sign(
         {id: user.id, email: user.email},
         process.env.APIKEY,
-        {expiresIn: '15m'}
+        {expiresIn: '30s'}
     )
     return accessToken
 }
@@ -170,6 +170,23 @@ const validateRToken = async (tokenString)=>{
     return {userId: rToken.userId, grace: graceStatus, threadId: rToken.threadId}
 
 }
+const getUpdatedtoken = async (threadId)=>{
+    const count = await prisma.refreshToken.count({
+        where:{
+            revoked : true
+        }
+    })
+    if(count > 1) throw new Error(`count exceeds 1 valid token per thread`);
+    const tokenHead = await prisma.refreshToken.findUnique({
+        where:{
+            AND: [
+            {threadId: threadId},
+            {revoked: false}
+            ]
+        }
+    })
+    return tokenHead
+}
 const getUserById = async (id) =>{
     return await prisma.user.findUnique({where:{id: id}});
 }
@@ -200,6 +217,7 @@ const service ={
     createAToken,
     createRToken,
     validateRToken,
+    getUpdatedtoken,
     getUserById,
     revokeRtoken,
     removeTokenThread 

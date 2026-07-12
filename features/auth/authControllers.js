@@ -62,13 +62,17 @@ const token = async (req, res)=>{
 
         //validate token in db
        const refreshToken = await service.validateRToken(oldToken)
-       console.log('refresh token value ---------------')
-       console.log(refreshToken)
-       console.log('------------------------------')
-       //handle grace Period
         // create new refreshToken
         console.log('Issuing new tokens')
-        const newRToken = await service.createRToken(refreshToken.userId,threadId,oldToken)
+        //handeling grace
+        let newRToken ;
+        if(refreshToken.grace){
+            //get last known valid token for thread id
+            newRToken = await service.getUpdatedtoken(refreshToken.threadId)
+            if(!newRToken) return res.status(500).json({msg: 'no token head was found!'});
+        }else{
+            newRToken = await service.createRToken(refreshToken.userId,threadId,oldToken)
+        }
         //create new accessToken
         const newAToken = await service.createAToken(refreshToken.userId )
         const user = await service.getUserById(refreshToken.userId)
