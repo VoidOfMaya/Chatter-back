@@ -115,7 +115,9 @@ const createRToken = async (userId,threadId, token=null)=>{
 }
 //runs on /refresh
 const validateRToken = async (tokenString)=>{
-    let graceStatus = null;
+    const now = new Date()
+    let graceStatus = false;
+    const grace = new Date(Date.now()+ 15000);
     const rToken = await prisma.refreshToken.findUnique({
         where: { token: tokenString }
     });
@@ -128,12 +130,15 @@ const validateRToken = async (tokenString)=>{
     }
     // token is revoked
     if(rToken.revoked) {
-        const now = new Date()
         //if token grace period is over:-
         if(now >= rToken.graceUntill){
             await prisma.refreshToken.updateMany({
-                where: { userId: rToken.userId }, 
-                data: { revoked: true }
+                where: { userId: rToken.threadId }, 
+                data: { 
+                    revoked: true, 
+                    revokedAt:now,
+                    graceUntill: grace,
+                }
             });
             
             const err = new Error('Security Breach: Token reuse detected');
@@ -145,12 +150,14 @@ const validateRToken = async (tokenString)=>{
         }
     }
     //expiration check
-    const now = new Date();
     if (rToken.expiresAt < now) {
         await prisma.refreshToken.update({
             where: {token: rToken.token},
             data:{
-                revoked: true
+                revoked: true,
+                    revokedAt:now,
+                    
+
             }
         })
         const err = new Error(`token expired: ${rToken.expiresAt}`);
@@ -160,7 +167,7 @@ const validateRToken = async (tokenString)=>{
         
     }
     //returns a valid token object 
-    return {userId: rToken.userId, grace: graceStatus, threadId: threadId}
+    return {userId: rToken.userId, grace: graceStatus, threadId: rToken.threadId}
 
 }
 const getUserById = async (id) =>{
