@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import 'dotenv/config'
+import { threadId } from 'worker_threads';
 /*
 implementing an access and refresh + token rotation on each refresh
  this will have a few componenets!
@@ -80,7 +81,7 @@ const createAToken = async (userId, threadId)=>{
     const accessToken = jwt.sign(
         {id: user.id, email: user.email},
         process.env.APIKEY,
-        {expiresIn: '30s'}
+        {expiresIn: '15m'}
     )
     return accessToken
 }
@@ -93,11 +94,7 @@ const createRToken = async (userId,threadId, token=null)=>{
     try{
         //revokes old token if exists/ provided
         if(token){
-            await prisma.refreshToken.update({
-                where: { token: token },
-                data: {
-                    revoked: true}
-            });
+            await revokeRtoken(token)
         }
         console.log(userId)
         //creates new token
@@ -118,26 +115,34 @@ const createRToken = async (userId,threadId, token=null)=>{
 }
 //runs on /refresh
 const validateRToken = async (tokenString)=>{
+    let graceStatus = null;
     const rToken = await prisma.refreshToken.findUnique({
         where: { token: tokenString }
     });
-
-    if (!rToken){
+    //token not found
+    if(!rToken){
         const err = new Error("Missing refresh token");
         err.status= 401
         err.code = "NO_REFRESH_TOKEN";
         throw err
     }
-    // If the token is already revoked
-    if (rToken.revoked) {
-        await prisma.refreshToken.updateMany({
-            where: { userId: rToken.userId }, 
-            data: { revoked: true }
-        });
-        const err = new Error('Security Breach: Token reuse detected');
-        err.status= 401
-        err.code = "TOKEN_REUSE_DETRECTED";
-        throw err
+    // token is revoked
+    if(rToken.revoked) {
+        const now = new Date()
+        //if token grace period is over:-
+        if(now >= rToken.graceUntill){
+            await prisma.refreshToken.updateMany({
+                where: { userId: rToken.userId }, 
+                data: { revoked: true }
+            });
+            
+            const err = new Error('Security Breach: Token reuse detected');
+            err.status= 401
+            err.code = "TOKEN_REUSE_DETRECTED";
+            throw err            
+        }else{
+            graceStatus = true
+        }
     }
     //expiration check
     const now = new Date();
@@ -155,17 +160,25 @@ const validateRToken = async (tokenString)=>{
         
     }
     //returns a valid token object 
-    return rToken
+    return {userId: rToken.userId, grace: graceStatus, threadId: threadId}
 
 }
 const getUserById = async (id) =>{
     return await prisma.user.findUnique({where:{id: id}});
 }
 const revokeRtoken = async (token)=>{
+
+
+
+
+    const now = new Date()
+    const grace = new Date(Date.now()+ 15000);
     await prisma.refreshToken.update({
         where:{token: token},
         data:{
-            revoked: true
+            revoked: true,
+            revokedAt: now,
+            graceUntill:grace
         }
     })
 }

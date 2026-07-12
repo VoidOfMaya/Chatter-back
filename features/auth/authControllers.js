@@ -62,6 +62,10 @@ const token = async (req, res)=>{
 
         //validate token in db
        const refreshToken = await service.validateRToken(oldToken)
+       console.log('refresh token value ---------------')
+       console.log(refreshToken)
+       console.log('------------------------------')
+       //handle grace Period
         // create new refreshToken
         console.log('Issuing new tokens')
         const newRToken = await service.createRToken(refreshToken.userId,threadId,oldToken)

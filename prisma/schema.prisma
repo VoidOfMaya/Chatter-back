@@ -19,6 +19,8 @@ model RefreshToken{
   expiresAt       DateTime
   createdAt       DateTime          @default(now())
   revoked         Boolean           @default(false)
+  revokedAt       DateTime?
+  graceUntill     DateTime?
   userId          Int
   owner            User              @relation(fields: [userId], references: [id])
 }
