@@ -4,6 +4,7 @@ import cors from 'cors';
 import { pipe } from './features/routerController.js';
 import { midware } from './features/middlewareController.js';
 import passport from 'passport';
+import{ createServer} from 'http';
 import cookieParser from 'cookie-parser';
 
 //cron token cleaner
@@ -53,8 +54,12 @@ app.use((err, req, res, next) => {
   });
 });
 
+//server wrapper to handle websockets
+const server = createServer(app)
+
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, (err)=>{
+
+server.listen(PORT, (err)=>{
     if(err) throw new err ;
     console.log(`Server running on port: ${PORT}`);
 })
