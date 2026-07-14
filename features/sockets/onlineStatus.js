@@ -1,10 +1,12 @@
-import { Server } from 'socket.io';
+import { service } from "./socketService.js"; 
 //controller
 const setOnlineStatus =(socket) =>{
-    let user= null;
-    socket.on('is_online',(data)=>{
-        user = data.id
-        console.log(`user ${data.userId}logged in`)
+    socket.on('is_online',async(data)=>{
+
+        console.log(`user ${data.userId}logged in`);
+        const user = await service.userOnline(data.userId)
+        console.log(user)
+        // 
         setTimeout(()=>{
             console.log(`sending response`)
             socket.emit('response',{
