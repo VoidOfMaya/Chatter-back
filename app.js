@@ -5,10 +5,12 @@ import { pipe } from './features/routerController.js';
 import { midware } from './features/middlewareController.js';
 import passport from 'passport';
 import{ createServer} from 'http';
+import { Server } from 'socket.io';
 import cookieParser from 'cookie-parser';
 
 //cron token cleaner
 import { tokenCleaner } from './tasks/dbCleaner.js';
+import { setOnlineStatus } from './features/sockets/onlineStatus.js';
 
 const app = express();
 
@@ -54,11 +56,28 @@ app.use((err, req, res, next) => {
   });
 });
 
-//server wrapper to handle websockets
+//server wrapper & socket.io implementation
 const server = createServer(app)
+const io = new Server(server,{
+  //defining CORS
+  cors:{
+    origin: [
+      'http://localhost:5173',
+      'http://localhost:4173',
+    ]
+  }
+});
 
+//server & socket connection
+io.on('connection',(socket)=>{
+  
+  setOnlineStatus(socket)
+  //socket.on('is_online',(data)=>{
+  //  setOnlineStatus(data);
+  //})
+})
+//http connection
 const PORT = process.env.PORT || 3000;
-
 server.listen(PORT, (err)=>{
     if(err) throw new err ;
     console.log(`Server running on port: ${PORT}`);
