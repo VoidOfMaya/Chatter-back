@@ -11,6 +11,7 @@ import cookieParser from 'cookie-parser';
 //cron token cleaner
 import { tokenCleaner } from './tasks/dbCleaner.js';
 import { setOnlineStatus } from './features/sockets/onlineStatus.js';
+import { authenticateConnection } from './features/sockets/middleware.js';
 
 const app = express();
 
@@ -67,10 +68,11 @@ const io = new Server(server,{
     ]
   }
 });
-
+authenticateConnection(io);
 //server & socket connection
 io.on('connection',(socket)=>{
-  
+  //authenticate socket
+  console.log(socket)
   setOnlineStatus(socket)
   //socket.on('is_online',(data)=>{
   //  setOnlineStatus(data);
