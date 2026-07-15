@@ -60,8 +60,20 @@ const userOnline = async (id) =>{
     }
     return outboundData
 }
+const getUser= async(id)=>{
+    return await prisma.user.findUnique({
+        where:{id: Number(id)},
+        select:{
+            id: true,
+            email:true,
+            name:true,
+
+        }
+    })
+}
 const service ={
     userOnline,
+    getUser,
 }
 export{ 
     service

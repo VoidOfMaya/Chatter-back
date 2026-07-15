@@ -1,26 +1,19 @@
 import { service } from "./socketService.js"; 
 //controller
-const setOnlineStatus =(socket) =>{
-    socket.on('is_online',async(data)=>{
+const setOnlineStatus =(socket, io) =>{
+    socket.on('friend_online',async ()=>{
 
-        console.log(`user ${data.userId}logged in`);
-        const event = await service.userOnline(data.userId)
+        console.log(`user ${socket.user.id}is live`);
+        const event = await service.userOnline(socket.user.id)
         console.log(event)
         //sending out data
         event.friends.forEach(id =>{
-            socket.to(`user: ${id}`).emit(
+            console.log(`sending packet to user ${id}`)
+            io.to(`user:${id}`).emit(
                 "friend_online",
-                data
+                event.data
             )            
         })
-
-        // 
-        setTimeout(()=>{
-            console.log(`sending response`)
-            socket.emit('response',{
-                message: `user at ${data.userId}, PONG response`
-            })
-        },5000)
     })
     //console.log(`user ${data.userId}loggerd in`)
 }

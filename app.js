@@ -20,7 +20,6 @@ app.use(cors({
     'http://localhost:5173',
     'http://localhost:4173',
   ],
-  
   credentials: true,
 }));
 
@@ -68,15 +67,17 @@ const io = new Server(server,{
     ]
   }
 });
+//authenticate socket
 authenticateConnection(io);
 //server & socket connection
 io.on('connection',(socket)=>{
-  //authenticate socket
-  console.log(socket)
-  setOnlineStatus(socket)
-  //socket.on('is_online',(data)=>{
-  //  setOnlineStatus(data);
-  //})
+  //create room
+  console.log(`socket at user ${socket.user.id} is online`)
+
+  socket.join(`user:${socket.user.id}`);
+
+  setOnlineStatus(socket, io)
+
 })
 //http connection
 const PORT = process.env.PORT || 3000;

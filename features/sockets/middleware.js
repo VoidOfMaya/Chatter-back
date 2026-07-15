@@ -1,13 +1,16 @@
 import jwt from 'jsonwebtoken';
+import { service } from './socketService.js';
+
 
 const authenticateConnection = (io)=>{
-    io.use((socket,next)=>{
+    io.use(async (socket,next)=>{
       const token = socket.handshake.auth?.token;
       if(!token) return next(new Error('Authentication error: no Token'));
     
       try {
         const decoded = jwt.verify(token, process.env.APIKEY);
-        socket.user = decoded;
+        const result = await service.getUser(decoded.id)
+        socket.user = result;
         next()
       } catch (err) {
         return next(new Error("Authentication error: Invalid token"));
