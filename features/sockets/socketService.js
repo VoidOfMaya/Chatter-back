@@ -1,10 +1,10 @@
 import { prisma } from "../../lib/prisma.js";
 
-const userOnline = async (id) =>{
+const userOnline = async (id,stat) =>{
     // set user to online
     const status = await prisma.user.update({
         where: {id : Number(id)},
-        data:{isOnline: true}
+        data:{isOnline: stat}
     })
     // get list of known friend ids
     const result =await prisma.user.findUnique({

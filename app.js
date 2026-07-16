@@ -12,6 +12,7 @@ import cookieParser from 'cookie-parser';
 import { tokenCleaner } from './tasks/dbCleaner.js';
 import { setOnlineStatus } from './features/sockets/onlineStatus.js';
 import { authenticateConnection } from './features/sockets/middleware.js';
+import { channelEventHandler } from './features/sockets/channelRoom.js';
 
 const app = express();
 
@@ -77,8 +78,9 @@ io.on('connection',(socket)=>{
   socket.join(`user:${socket.user.id}`);
 
   setOnlineStatus(socket, io)
-
+  channelEventHandler(socket, io)
 })
+
 //http connection
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, (err)=>{
