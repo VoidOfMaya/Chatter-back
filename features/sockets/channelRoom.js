@@ -23,6 +23,9 @@ const channelEventHandler =(socket, io) =>{
             }
         ) 
     })
+    socket.on(`log_update`,async(data)=>{
+        socket.to(`channel_room${data.id}`).emit('update_log') 
+    })
 }
 export{
     channelEventHandler
