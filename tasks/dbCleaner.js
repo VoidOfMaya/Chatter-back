@@ -23,6 +23,15 @@ const tokenCleaner = async() =>{
         }
     })
 }
+const resetSocketData = async ()=>{
+    console.log('reseting users status!')
+    await prisma.user.updateMany({
+        data:{
+            isOnline:false
+        }
+    })
+}
 export {
-    tokenCleaner
+    tokenCleaner,
+    resetSocketData
 }

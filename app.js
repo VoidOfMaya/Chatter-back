@@ -9,7 +9,7 @@ import { Server } from 'socket.io';
 import cookieParser from 'cookie-parser';
 
 //cron token cleaner
-import { tokenCleaner } from './tasks/dbCleaner.js';
+import { tokenCleaner,resetSocketData } from './tasks/dbCleaner.js';
 import { setOnlineStatus } from './features/sockets/onlineStatus.js';
 import { authenticateConnection } from './features/sockets/middleware.js';
 import { channelEventHandler } from './features/sockets/channelRoom.js';
@@ -36,6 +36,7 @@ app.use(passport.initialize());
 app.use(cookieParser());
 //routs:-
 tokenCleaner(); //runs auto db cleaning function every week!
+resetSocketData();//clears volitile socket managed data
 app.use('/',pipe.indexRouter) // this houses the read rout for post and comments Comment router will live here!
 app.use('/auth', pipe.authRouter)
 app.use('/user',midware.isAuthenticated,pipe.userRouter)
