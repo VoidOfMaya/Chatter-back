@@ -3,6 +3,7 @@ import { channelRouter } from './channel/channelRouter.js'
 import { friendRouter } from './friends/friendsRouter.js'
 import {indexRouter} from './index/indexRouter.js'
 import { messsageRouter } from './messages/messageRouter.js'
+import { photoRouter } from './photos/photoRouter.js'
 import { userRouter } from './userRouter/userRouter.js'
 
 const pipe = {
@@ -11,7 +12,8 @@ const pipe = {
     userRouter,
     friendRouter,
     channelRouter,
-    messsageRouter
+    messsageRouter,
+    photoRouter
 }
 export{
     pipe

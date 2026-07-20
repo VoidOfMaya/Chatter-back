@@ -37,11 +37,13 @@ app.use(cookieParser());
 //routs:-
 tokenCleaner(); //runs auto db cleaning function every week!
 resetSocketData();//clears volitile socket managed data
+
 app.use('/',pipe.indexRouter) // this houses the read rout for post and comments Comment router will live here!
 app.use('/auth', pipe.authRouter)
 app.use('/user',midware.isAuthenticated,pipe.userRouter)
 app.use('/channel/:channelId',midware.isAuthenticated, pipe.channelRouter)
 app.use('/friend',midware.isAuthenticated,pipe.friendRouter)
+app.use('/upload',midware.isAuthenticated,pipe.photoRouter)
 //error handlers:
 //404
 app.use((req, res, next)=>{
