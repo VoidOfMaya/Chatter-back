@@ -49,7 +49,8 @@ const getChannelbyId = async (id) =>{
                     user:{
                         select:{
                             id: true,
-                            name:true
+                            name:true,
+                            photo:true
                         }
                     },
                     parent:{
@@ -59,7 +60,8 @@ const getChannelbyId = async (id) =>{
                             user:{
                                 select:{
                                     id:true,
-                                    name:true
+                                    name:true,
+                                    photo: true
                                 }
                             }
                         }

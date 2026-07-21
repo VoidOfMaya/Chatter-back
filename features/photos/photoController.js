@@ -1,51 +1,50 @@
 import {cloudUpload} from './cloudinary.js'
-import http from 'http'
-import https from 'https'
-import { matchedData, validationResult } from 'express-validator';
+import { service } from './photoService.js';
 
  
-async function uploadFile(req, res, next){
-   //first validate and mutate data
+async function uploadFile(req, res){
+   //data validlation happens on multer middleware layer
 
    //handle data upload:
     console.log('multerController')
-    const errors = validationResult(req);
-    if(!errors.isEmpty())return res.status(400).json({errors : errors.array()})
-    const data = matchedData(req);
-    console.log(req.file)
     try{            
-      /*const result = await cloudUpload(req.file.buffer);
+      const result = await cloudUpload(req.file.buffer);
       console.log('uploaded to cloudinary')
       
       //checks if cloudinary  returned the correct objects
       if(!result.secure_url){ 
-         req.flash('errors','internal Error: cloudinary url faulty, try again later!' );
-         return res.redirect('/')
+        throw new Error('errors','internal Error: cloudinary url faulty, try again later!' )
       }
-      // handles file upload from folder
-      
-      const id = req.body.folderId? Number(req.body.folderId) : null;
-
-      //prisma takes a fileobj that has the following
-      const fileObj ={
-         userId :        req.user.id,
-         originalName:   req.file.originalname,      
-         fileName:       result.public_id,    
-         mimeType:       req.file.mimetype,          
-         size:           req.file.size,           
-         path:           result.secure_url,
-         folderId:       id             //implement folderid get if file is created inside a folder
-      }
-      await prismaAddFile(fileObj);
-      console.log('added to db');*/
-      
+      //update user with a new profile photo url
+      const userPhoto = await service.setProfilePicture(req.user.id, result.secure_url)
+      res.status(201).json({msg: 'photo updated successfully!'})
    }catch(err){
-      //next(err)
-      req.flash('errors', err);
-      res.redirect('/')
+      res.status(500).json({msg: err.message})
    }
-    return req.body.folderId? res.redirect(`/folders/${req.body.folderId}?`): res.redirect('/');
+
+ }
+ const msgPhoto = async(req, res) =>{
+   //data validlation happens on multer middleware layer
+
+   //handle data upload:
+    console.log('multerController')
+    try{            
+      const result = await cloudUpload(req.file.buffer);
+      console.log('uploaded to cloudinary')
+      
+      //checks if cloudinary  returned the correct objects
+      if(!result.secure_url){ 
+        throw new Error('errors','internal Error: cloudinary url faulty, try again later!' )
+      }
+      //update user with a new profile photo url
+      const msgPhoto = await service.setMsgPicture(req.user.id, result.secure_url)
+      res.status(201).json({msg: result.secure_url})
+   }catch(err){
+      res.status(500).json({msg: err.message})
+   }
+
  }
  export{
     uploadFile,
+    msgPhoto
  }
