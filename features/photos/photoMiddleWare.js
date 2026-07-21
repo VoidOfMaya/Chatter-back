@@ -32,7 +32,7 @@ function multerMiddleware (req, res, next){
             }
             next();          
         }catch(err){
-            return res.status(400).json({msg: err})           
+            return res.status(400).json({msg: err.message})           
         }
 
     })
