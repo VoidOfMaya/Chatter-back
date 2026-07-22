@@ -46,6 +46,7 @@ const getChannelbyId = async (id) =>{
                     id: true,
                     content: true,
                     createdAt:true,
+                    photo:true,
                     user:{
                         select:{
                             id: true,

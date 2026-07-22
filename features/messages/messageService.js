@@ -16,6 +16,7 @@ const getChatlog = async (channelId)=>{
             userId: true,
             content: true,
             createdAt: true,
+            photo: true,
             parent:{
                 select:{
                     userId: true,
