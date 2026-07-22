@@ -26,13 +26,14 @@ const getChatlog = async (channelId)=>{
     })
     return result
 }
-const createMessage = async (channelId,userId, content, parentId = null) =>{
+const createMessage = async (channelId,userId, content, parentId = null,photoUrl = null) =>{
     await prisma.message.create({
         data:{
             userId: userId,
             channelId: channelId,
             content: content,
-            parentId: parentId
+            parentId: parentId,
+            photo: photoUrl,
         }
     })
 }

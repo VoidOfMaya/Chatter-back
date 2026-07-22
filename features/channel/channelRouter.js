@@ -3,6 +3,7 @@ import { controller } from "./channelController.js";
 import { validate } from "./channelValidation.js";
 import { authorize } from './premissions.js'
 import { messsageRouter } from "../messages/messageRouter.js";
+import {multerMiddleware} from '../photos/photoMiddleWare.js'
 
 const channelRouter = Router({mergeParams: true});
 //premissions
@@ -27,7 +28,7 @@ channelRouter.put('/mod/enablemod',validate.relation ,validate.channel ,authoriz
 channelRouter.put('/mod/disablemod',validate.relation ,validate.channel ,authorize.mod ,controller.disableMod)// postman-tested
 //====== NESTED MESSAGE ROUTER==========
 // member level authorization
-channelRouter.use('/msgs',validate.channel ,authorize.member , messsageRouter);
+channelRouter.use('/msgs',multerMiddleware,validate.channel ,authorize.member , messsageRouter);
 //mod
 
 

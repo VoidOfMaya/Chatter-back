@@ -23,28 +23,7 @@ async function uploadFile(req, res){
    }
 
  }
- const msgPhoto = async(req, res) =>{
-   //data validlation happens on multer middleware layer
-
-   //handle data upload:
-    console.log('multerController')
-    try{            
-      const result = await cloudUpload(req.file.buffer);
-      console.log('uploaded to cloudinary')
-      
-      //checks if cloudinary  returned the correct objects
-      if(!result.secure_url){ 
-        throw new Error('errors','internal Error: cloudinary url faulty, try again later!' )
-      }
-      //update user with a new profile photo url
-      const msgPhoto = await service.setMsgPicture(req.user.id, result.secure_url)
-      res.status(201).json({msg: result.secure_url})
-   }catch(err){
-      res.status(500).json({msg: err.message})
-   }
-
- }
+ 
  export{
     uploadFile,
-    msgPhoto
  }

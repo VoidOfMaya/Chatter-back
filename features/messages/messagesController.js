@@ -1,5 +1,6 @@
 import { service } from "./messageService.js";
 import { matchedData, validationResult } from "express-validator";
+import { cloudUpload } from "../photos/cloudinary.js"; 
 
 
 const getChatLog = async (req, res) =>{
@@ -20,16 +21,23 @@ const submitMessage = async (req, res) =>{
     console.log('logging message controller data ')
     const errors = validationResult(req);
     if(!errors.isEmpty()) return res.status(400).json({errors : errors.array()})
+    const {content} = matchedData(req); 
+
     const {channelId}= req.params //sanetized by channel validations!
     const {id} = req.user //gets current user id
-    const {content} = matchedData(req); 
+
     const responseTo = !typeof req.body.parentId === Number? null : req.body.parentId
-    console.log(req.body)
-    console.log(`channelId: ${channelId}, userId: ${id}`)
-    console.log(`response to: ${responseTo}, content: ${content}`)
+
     //main logic
     try {
-        await service.createMessage(Number(channelId),id, content, responseTo)
+        //upload to cloudinary
+        const result = await cloudUpload(req.file.buffer);
+        //checks if cloudinary  returned the correct objects
+        if(!result.secure_url){ 
+            throw new Error('errors','internal Error: cloudinary url faulty, try again later!' )
+        }
+        //send to database
+        await service.createMessage(Number(channelId),id, content, responseTo, result.secure_url)
         return res.status(200).json({msg: 'message created!'})
     } catch (err) {
         res.status(500).json({msg: err.message || 'Internal Server Error'})
