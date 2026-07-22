@@ -31,7 +31,7 @@ function multerMiddleware (req, res, next){
                 throw new Error(`${req.fileValidationError}`)
             }
             console.log('multerMiddleWare')
-            console.log(req.body)
+            //console.log(req.body)
             next();          
         }catch(err){
             return res.status(400).json({msg: err.message})           

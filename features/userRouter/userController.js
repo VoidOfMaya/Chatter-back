@@ -1,5 +1,6 @@
 import { service } from "./userServices.js"
 import { validationResult, matchedData } from "express-validator"
+import { cloudUpload } from "../photos/cloudinary.js"
 
 //gets  friends& channels
 const getDashboard = async (req, res)=>{
@@ -29,9 +30,14 @@ const editCurrentUser = async (req, res)=>{
     const errors = validationResult(req);
     if(!errors.isEmpty()) return res.status(400).json({errors : errors.array()})
     const data = matchedData(req);  
-    console.log(data)
     try {
-        const result = await service.editCurrentUser(req.user.id,data)
+        //upload to cloudinary
+        const photo = await cloudUpload(req.file.buffer);
+        //checks if cloudinary  returned the correct objects
+        if(!photo.secure_url){ 
+            throw new Error('errors','internal Error: cloudinary url faulty, try again later!' )
+        }
+        const result = await service.editCurrentUser(req.user.id,data, photo.secure_url)
         res.status(200).json({
             name:result.name,
             bio:result.bio,

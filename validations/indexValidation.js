@@ -35,7 +35,7 @@ const userEdit = [
     body('name').trim().isLength({max:25, min: 3}).withMessage('name must be 3 - 25 characters in length')
     .matches(/^[a-zA-Z ]+$/).withMessage('name can have letters and spaces'),
     body('bio').trim().isLength({max:250}).withMessage('bio limit is 250 characters in length')
-    .matches(/^[a-zA-Z0-9 ]+$/).withMessage('bio can only be letters, spaces and numbers'),
+    .withMessage('bio can only be letters, spaces and numbers'),
     body('photo').trim()
 ]
 const userId =[

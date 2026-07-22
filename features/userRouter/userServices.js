@@ -101,14 +101,14 @@ const getUser= async(id)=>{
         }
     })
 }
-const editCurrentUser = async( id, data) =>{
+const editCurrentUser = async( id, data,photo = null) =>{
     const user = await prisma.user.findUnique({where:{id: id}})
     return await prisma.user.update({
         where: {id: id},
         data:{
             name: data.name ===''? user.name: data.name,
             bio:   data.bio === ''? user.bio : data.bio,
-            photo: data.photo === ''? user.photo: data.photo
+            photo: photo
         }
     })
 

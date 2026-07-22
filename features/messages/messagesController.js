@@ -31,13 +31,17 @@ const submitMessage = async (req, res) =>{
     //main logic
     try {
         //upload to cloudinary
-        const result = await cloudUpload(req.file.buffer);
-        //checks if cloudinary  returned the correct objects
-        if(!result.secure_url){ 
-            throw new Error('errors','internal Error: cloudinary url faulty, try again later!' )
+        let result = null;
+        if(req.file){
+            result = await cloudUpload(req.file.buffer);
+            //checks if cloudinary  returned the correct objects
+            if(!result.secure_url){ 
+                throw new Error('errors','internal Error: cloudinary url faulty, try again later!' )
+            }            
         }
+
         //send to database
-        await service.createMessage(Number(channelId),id, content, responseTo, result.secure_url)
+        await service.createMessage(Number(channelId),id, content, responseTo, result?.secure_url)
         return res.status(200).json({msg: 'message created!'})
     } catch (err) {
         res.status(500).json({msg: err.message || 'Internal Server Error'})
