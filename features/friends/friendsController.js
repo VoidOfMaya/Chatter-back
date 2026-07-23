@@ -47,7 +47,6 @@ const pendingFriends = async (req, res)=>{
     }    
 }
 const acceptFriendRequest = async (req, res) =>{
-    console.log(`accessing request accept controller`)
     // data validation
     const errors = validationResult(req);
     if(!errors.isEmpty()) return res.status(400).json({errors : errors.array()})

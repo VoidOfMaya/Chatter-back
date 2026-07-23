@@ -7,8 +7,6 @@ import { prisma } from "../../lib/prisma.js"
    
 */
 const getChatlog = async (channelId)=>{
-    console.log("chatlog service:-")
-    console.log(typeof channelId)
     const result = await prisma.message.findMany({
         where: {channelId : channelId},
         select:{

@@ -38,7 +38,6 @@ const validateRtoken = async(req, res, next)=>{
         const dbToken = await  prisma.refreshToken.findUnique({
             where:{token: token}
         })
-        console.log('Rtoken validator')
         if(!dbToken){ //validate token existance
             throw new Error ('invalid token use detected')
         }
@@ -54,6 +53,9 @@ const validateRtoken = async(req, res, next)=>{
             next()
         }
     }catch(err){
+        console.log(
+            `[${new Date().toISOString()}] Error: ${err.message}, Method: ${req.method}, Path: ${req.originalUrl}`
+        )
         res.clearCookie('refreshToken');
         res.clearCookie('threadId')
         return res.status(401).json({

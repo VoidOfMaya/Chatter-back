@@ -75,11 +75,8 @@ const io = new Server(server,{
 authenticateConnection(io);
 //server & socket connection
 io.on('connection',(socket)=>{
-  //create room
-  console.log(`socket at user ${socket.user.id} is online`)
-
+  //create root
   socket.join(`user:${socket.user.id}`);
-
   setOnlineStatus(socket, io)
   channelEventHandler(socket, io)
 })
@@ -88,5 +85,5 @@ io.on('connection',(socket)=>{
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, (err)=>{
     if(err) throw new err ;
-    console.log(`Server running on port: ${PORT}`);
+    console.log(`Server running on port: ${PORT} (${process.env.NODE_ENV})`);
 })

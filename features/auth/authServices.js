@@ -74,7 +74,6 @@ const login = async (data) =>{
     }
 }
 const createAToken = async (userId, threadId)=>{
-    console.log('new A token issued')
     const user = await prisma.user.findUnique({
         where:{id: Number(userId)}
     });
@@ -96,7 +95,6 @@ const createRToken = async (userId,threadId, token=null)=>{
         if(token){
             await revokeRtoken(token)
         }
-        console.log(userId)
         //creates new token
         await prisma.refreshToken.create({
             data:{
@@ -109,7 +107,9 @@ const createRToken = async (userId,threadId, token=null)=>{
         })
         return refreshToken        
     }catch(err){
-        console.error("Token Generation Error:", err);
+        console.log(
+            `[${new Date().toISOString()}] Error: ${err.message}, Method: ${req.method}, Path: ${req.originalUrl}`
+        )
         throw new Error('Could not generate refresh token');
     }
 }

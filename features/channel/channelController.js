@@ -20,7 +20,6 @@ const createNewChannel = async (req, res) =>{
     const errors = validationResult(req);
     if(!errors.isEmpty()) return res.status(400).json({errors : errors.array()})
     const data = matchedData(req);  
-    console.log(data)
     try {
         //use user.id to create a new channel, add them to members, and asign as mod
         const newChannel = await service.newChannel(Number(req.user.id), data.name)

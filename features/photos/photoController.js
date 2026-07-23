@@ -6,11 +6,9 @@ async function uploadFile(req, res){
    //data validlation happens on multer middleware layer
 
    //handle data upload:
-    console.log('multerController')
     try{            
       const result = await cloudUpload(req.file.buffer);
-      console.log('uploaded to cloudinary')
-      
+
       //checks if cloudinary  returned the correct objects
       if(!result.secure_url){ 
         throw new Error('errors','internal Error: cloudinary url faulty, try again later!' )

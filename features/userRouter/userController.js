@@ -7,7 +7,6 @@ const getDashboard = async (req, res)=>{
     try {
         //takes req.user.id to get dashboard
         const data = await service.populateDashboard(req.user.id)
-        //console.log(data)
         res.status(200).json(data)
     } catch (err) {
       res.status(500).json({msg: err.message || 'internal server error'})  
@@ -54,8 +53,6 @@ const viewUserProfile = async (req, res)=>{
     const errors = validationResult(req);
     if(!errors.isEmpty()) return res.status(400).json({errors : errors.array()})
     const data = matchedData(req);  
-    console.log(req.params.id)
-    console.log(data)
 
     //takes user id from  params
     try {

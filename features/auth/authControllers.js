@@ -48,12 +48,10 @@ const login = async (req, res)=>{
 const token = async (req, res)=>{
     //if refresh token valid  create new access token & refresh token
     //if refresh token invalid return error
-    console.log('authenticate user controller')
     try{
         //validating that cookies exist
         const oldToken = req.cookies.refreshToken
         const threadId = req.cookies.threadId
-        console.log('refresh rout controller')
         if(!oldToken|| !threadId){
             return res.status(401).json({
                 code: 'Missing Credentials',
@@ -63,7 +61,6 @@ const token = async (req, res)=>{
         //validate token in db
        const refreshToken = await service.validateRToken(oldToken)
         // create new refreshToken
-        console.log('Issuing new tokens')
         //handeling grace
         let newRToken ;
         if(refreshToken.grace){
@@ -78,7 +75,6 @@ const token = async (req, res)=>{
         const user = await service.getUserById(refreshToken.userId)
         //updates cookies
         // overwrite cookies automatically
-        console.log('renewing cookies')
         res.cookie(
             'refreshToken',newRToken,{
                 httpOnly: true,
@@ -98,7 +94,6 @@ const token = async (req, res)=>{
             }
         );
         //returns user and new access token
-        console.log('shipping fresh user data')
         return res.status(201).json({
             user:{
                 id: user.id,
@@ -113,7 +108,9 @@ const token = async (req, res)=>{
             accessToken: newAToken, 
         })
     }catch(err){
-        console.log(err)
+        console.log(
+            `[${new Date().toISOString()}] Error: ${err.message}, Method: ${req.method}, Path: ${req.originalUrl}`
+        )
         res.status(err.status).json({code: err.code || 'Internall server Error'})
     }
 }
@@ -122,7 +119,6 @@ const logout = async (req, res) =>{
     try{
         const threadId = req.cookies.threadId;
         const result = await service.removeTokenThread(threadId);
-        console.log('refreshtoken family deleted')
         res.clearCookie('refreshToken', {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
@@ -135,9 +131,11 @@ const logout = async (req, res) =>{
             path:'/',
             sameSite: 'lax',
         });
-        console.log('cookies cleared!')
         res.status(200).json(result)
     }catch(err){
+        console.log(
+            `[${new Date().toISOString()}] Error: ${err.message}, Method: ${req.method}, Path: ${req.originalUrl}`
+        )
         res.status(500).json({error: err.message || 'Internal Server Error'})
     }
 }
