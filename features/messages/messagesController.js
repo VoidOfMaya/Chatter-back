@@ -13,6 +13,12 @@ const getChatLog = async (req, res) =>{
         const chatlog = await service.getChatlog(channelId)
         return res.status(200).json(chatlog)
     } catch (err) {
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
         res.status(500).json({msg: err.message || 'Internal Server Error'})
     }
 }
@@ -43,6 +49,12 @@ const submitMessage = async (req, res) =>{
         await service.createMessage(Number(channelId),id, content, responseTo, result?.secure_url)
         return res.status(200).json({msg: 'message created!'})
     } catch (err) {
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
         res.status(500).json({msg: err.message || 'Internal Server Error'})
     }   
 }
@@ -56,6 +68,12 @@ const editMessage = async (req, res) =>{
         await service.editMessage(content, id)
         return res.status(200).json({msg: 'message edit!'})
     } catch (err) {
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
         res.status(500).json({msg: err.message || 'Internal Server Error'})
     }     
 }
@@ -69,6 +87,12 @@ const deleteMessage = async(req, res) =>{
         await service.deleteMessage(id)
         return res.status(200).json({msg: 'message deleted!'})
     } catch (err) {
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
         res.status(500).json({msg: err.message || 'Internal Server Error'})
     }   
 }

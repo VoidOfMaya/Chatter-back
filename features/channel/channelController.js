@@ -25,6 +25,12 @@ const createNewChannel = async (req, res) =>{
         const newChannel = await service.newChannel(Number(req.user.id), data.name)
         res.status(200).json(newChannel)
     } catch (err) {
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
         res.status(500).json({error: err.message || 'Internal Server Error'})
     }
 }
@@ -39,6 +45,12 @@ const getChannel = async (req, res) =>{
         const dm = await service.getChannelbyId(channelId)
         return res.status(200).json(dm)
     } catch (err) {
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
         return res.status(500).json({error: err.message || 'Internal Server Error'})
     }
 }
@@ -52,6 +64,12 @@ const leaveChannel = async (req, res) =>{
         const request = await service.leaveChannel(data.relationId)
         res.status(200).json(request)
     } catch (err) {
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
         res.status(500).json({error: err.message || 'Internal Server Error'})
     }    
 }
@@ -65,6 +83,12 @@ const joinRequest = async (req, res) =>{
         const request = await service.joinRequest(data.channelId, Number(req.user.id))
         res.status(200).json(request)
     } catch (err) {
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
         res.status(500).json({error: err.message || 'Internal Server Error'})
     }    
 }
@@ -87,6 +111,12 @@ const checkModStat = async(req,res)=>{
         }
         return res.status(200).json({ status: result,message})   
     } catch (err) {
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
        return res.status(500).json({error: err.message || 'Internal Server Error'})
     }    
 }
@@ -100,6 +130,12 @@ const enableMod = async (req, res) =>{
         await service.enableMod(data.relationId)
         res.status(200).json({ msg:'user has been granted Mod Primissions'})
     } catch (err) {
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
         res.status(500).json({error: err.message || 'Internal Server Error'})
     }    
 }
@@ -113,6 +149,12 @@ const disableMod = async (req, res) =>{
         await service.disableMod(data.relationId)
         res.status(200).json({ msg:'user Mod Primissions revoked!'})
     } catch (err) {
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
         res.status(500).json({error: err.message || 'Internal Server Error'})
     }    
 }
@@ -126,6 +168,12 @@ const removeUser = async (req, res) =>{
         await service.removeUser(data.relationId)
         res.status(200).json({msg: 'user removed'})
     } catch (err) {
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
         res.status(500).json({error: err.message || 'Internal Server Error'})
     }    
 }
@@ -139,6 +187,12 @@ const getAllJoinRequests = async (req, res) =>{
         const allRequest = await service.getAllJoinRequests(data.channelId)
         res.status(200).json(allRequest)
     } catch (err) {
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
         res.status(500).json({error: err.message || 'Internal Server Error'})
     }    
 }
@@ -152,6 +206,12 @@ const acceptRequest = async (req, res) =>{
         await service.acceptRequest(data.relationId)
         res.status(200).json({msg: 'user accepted'})
     } catch (err) {
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
         res.status(500).json({error: err.message || 'Internal Server Error'})
     }    
 }
@@ -165,6 +225,12 @@ const rejectRequest = async (req, res) =>{
         await service.rejectRequest(data.relationId)
         res.status(200).json({msg: 'user rejected'})
     } catch (err) {
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
         res.status(500).json({error: err.message || 'Internal Server Error'})
     }    
 }

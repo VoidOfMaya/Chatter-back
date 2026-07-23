@@ -107,9 +107,12 @@ const createRToken = async (userId,threadId, token=null)=>{
         })
         return refreshToken        
     }catch(err){
-        console.log(
-            `[${new Date().toISOString()}] Error: ${err.message}, Method: ${req.method}, Path: ${req.originalUrl}`
-        )
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
         throw new Error('Could not generate refresh token');
     }
 }

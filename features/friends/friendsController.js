@@ -7,6 +7,12 @@ const getActiveFriends = async (req, res) =>{
         const friend = await service.getActiveFriends(Number(req.user.id))
         res.status(200).json(friend)
     } catch (err) {
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
         res.status(500).json({msg: err.message || 'Internal Server Error'})
     }
 }
@@ -21,6 +27,12 @@ const getFriendConnectionbyId = async (req, res) =>{
         const friends = await service.getFriendConnectionById(id)
         res.status(200).json(friends)
     } catch (err) {
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
         res.status(500).json({msg: err.message || 'Internal Server Error'})
     }    
 }
@@ -34,6 +46,12 @@ const requestFriend = async (req, res) =>{
         const request = await service.sendFriendRequest(Number(req.user.id), Number(recieverId))
         res.status(200).json(request)
     } catch (err) {
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
         res.status(500).json({msg: err.message || 'Internal Server Error'})       
     }
 }
@@ -43,6 +61,12 @@ const pendingFriends = async (req, res)=>{
         const pendingRequests = await service.getPendingFriends(Number(req.user.id))
         res.status(200).json(pendingRequests)
     } catch (err) {
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
         res.status(500).json({msg: err.message || 'Internal Server Error'})
     }    
 }
@@ -57,6 +81,12 @@ const acceptFriendRequest = async (req, res) =>{
         const result = await service.acceptFriendRequest(Number(requestId))
         res.status(200).json(result)
     } catch (err) {
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
         res.status(500).json({msg: err.message || 'Internal Server Error'})
     } 
 }
@@ -71,6 +101,12 @@ const rejectFriendRequest = async (req, res) =>{
         await service.rejectFriendRequest(Number(requestId))
         res.status(200).json({msg: 'friend request rejected!'})
     } catch (err) {
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
         res.status(500).json({msg: err.message || 'Internal Server Error'})
     }    
 }
@@ -85,6 +121,12 @@ const endFriendship = async (req, res) =>{
         await service.endFriendship(relationId, channelId)
         res.status(200).json({msg: 'friend removed!'})
     } catch (err) {
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
         res.status(500).json({msg: err.message || 'Internal Server Error'})
     }      
 }

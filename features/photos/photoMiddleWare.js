@@ -33,6 +33,12 @@ function multerMiddleware (req, res, next){
 
             next();          
         }catch(err){
+            console.error({
+                message: err.message,
+                method: req.method,
+                path: req.originalUrl,
+                stack: err.stack,
+            });
             return res.status(400).json({msg: err.message})           
         }
 

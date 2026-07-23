@@ -11,6 +11,12 @@ const newUser = async (req, res) =>{
     try{
         await service.register(data)
     }catch(err){
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
         return res.status(500).json({error: err.message || 'Internal Server Error'})
     }
     res.status(201).json({message:'User  registered successfully'})
@@ -41,6 +47,12 @@ const login = async (req, res)=>{
         });
         res.status(200).json({user: result.user, accessToken: result.accessToken});
     }catch(err){
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
         res.status(500).json({error: err.message || 'Internal Server Error'})  
     }
 }
@@ -108,9 +120,12 @@ const token = async (req, res)=>{
             accessToken: newAToken, 
         })
     }catch(err){
-        console.log(
-            `[${new Date().toISOString()}] Error: ${err.message}, Method: ${req.method}, Path: ${req.originalUrl}`
-        )
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
         res.status(err.status).json({code: err.code || 'Internall server Error'})
     }
 }
@@ -133,9 +148,12 @@ const logout = async (req, res) =>{
         });
         res.status(200).json(result)
     }catch(err){
-        console.log(
-            `[${new Date().toISOString()}] Error: ${err.message}, Method: ${req.method}, Path: ${req.originalUrl}`
-        )
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
         res.status(500).json({error: err.message || 'Internal Server Error'})
     }
 }

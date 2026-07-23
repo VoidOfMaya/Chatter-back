@@ -26,6 +26,12 @@ const passportConfig=()=>{
             if(!user) return done(null, false);
             return done(null, user);
         }catch(err){
+            console.error({
+                message: err.message,
+                method: req.method,
+                path: req.originalUrl,
+                stack: err.stack,
+            });
             done(err)
         }
     }))
@@ -53,9 +59,12 @@ const validateRtoken = async(req, res, next)=>{
             next()
         }
     }catch(err){
-        console.log(
-            `[${new Date().toISOString()}] Error: ${err.message}, Method: ${req.method}, Path: ${req.originalUrl}`
-        )
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
         res.clearCookie('refreshToken');
         res.clearCookie('threadId')
         return res.status(401).json({

@@ -13,6 +13,12 @@ const authenticateConnection = (io)=>{
         socket.user = result;
         next()
       } catch (err) {
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
         return next(new Error("Authentication error: Invalid token"));
       }
     })

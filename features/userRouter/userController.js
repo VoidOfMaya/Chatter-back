@@ -9,6 +9,12 @@ const getDashboard = async (req, res)=>{
         const data = await service.populateDashboard(req.user.id)
         res.status(200).json(data)
     } catch (err) {
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
       res.status(500).json({msg: err.message || 'internal server error'})  
     }
     
@@ -20,6 +26,12 @@ const getCurrentUser = async (req, res)=>{
         const currentUser = await service.getUser(req.user.id)
         res.status(200).json(currentUser)
     } catch (err) {
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
         res.status(500).json({msg: err.message || 'internal server error'})  
     }
 }
@@ -43,6 +55,12 @@ const editCurrentUser = async (req, res)=>{
             photo:result.photo
         })
     } catch (err) {
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
         res.status(500).json({msg: err.message || 'internal server error'})      
     }
     
@@ -59,6 +77,12 @@ const viewUserProfile = async (req, res)=>{
         const currentUser = await service.getUser(data.id)
         res.status(200).json(currentUser)
     } catch (err) {
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
         res.status(500).json({msg: err.message || 'internal server error'})  
     }
 }

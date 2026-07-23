@@ -17,6 +17,12 @@ async function uploadFile(req, res){
       const userPhoto = await service.setProfilePicture(req.user.id, result.secure_url)
       res.status(201).json({msg: 'photo updated successfully!'})
    }catch(err){
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
       res.status(500).json({msg: err.message})
    }
 
