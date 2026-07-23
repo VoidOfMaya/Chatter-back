@@ -70,10 +70,7 @@ const server = createServer(app)
 const io = new Server(server,{
   //defining CORS
   cors:{
-    origin: [
-      'http://localhost:5173',
-      'http://localhost:4173',
-    ]
+    origin:allowedOrigins
   }
 });
 //authenticate socket
