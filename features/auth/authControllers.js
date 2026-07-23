@@ -126,7 +126,7 @@ const token = async (req, res)=>{
             path: req.originalUrl,
             stack: err.stack,
         });
-        res.status(err.status).json({code: err.code || 'Internall server Error'})
+        res.status(500).json({code: err.code || 'Internall server Error'})
     }
 }
 //requires a token thread uuid

@@ -67,12 +67,7 @@ const deletePriv = async( req, res, next) =>{
         } 
         throw new Error('Unauthorized action!');     
     }catch(err){
-        console.error({
-            message: err.message,
-            method: req.method,
-            path: req.originalUrl,
-            stack: err.stack,
-        });
+        //handels mod premissions
         return res.status(403).json({msg: `${err}`})
     }
 

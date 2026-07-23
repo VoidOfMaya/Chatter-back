@@ -59,12 +59,7 @@ const validateRtoken = async(req, res, next)=>{
             next()
         }
     }catch(err){
-        console.error({
-            message: err.message,
-            method: req.method,
-            path: req.originalUrl,
-            stack: err.stack,
-        });
+        //handles session expiration
         res.clearCookie('refreshToken');
         res.clearCookie('threadId')
         return res.status(401).json({

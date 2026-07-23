@@ -12,6 +12,12 @@ const getChannelInfo = async (req, res) =>{
         const dm = await service.getChannelInfo(data.channelId)
         res.status(200).json(dm)
     } catch (err) {
+        console.error({
+            message: err.message,
+            method: req.method,
+            path: req.originalUrl,
+            stack: err.stack,
+        });
         res.status(500).json({error: err.message || 'Internal Server Error'})
     }
 }
