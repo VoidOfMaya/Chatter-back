@@ -16,11 +16,16 @@ import { channelEventHandler } from './features/sockets/channelRoom.js';
 
 const app = express();
 
+const allowedOrigins =
+    process.env.NODE_ENV === "production"
+        ? [process.env.CLIENT_URL]
+        : [
+            "http://localhost:5173",
+            "http://localhost:4173",
+        ];
+
 app.use(cors({
-  origin:[
-    'http://localhost:5173',
-    'http://localhost:4173',
-  ],
+  origin: allowedOrigins,
   credentials: true,
 }));
 

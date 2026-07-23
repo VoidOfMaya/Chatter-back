@@ -30,18 +30,20 @@ const login = async (req, res)=>{
     try{
         const result = await service.login(data);
         //pushes threadID and refreshToken to cookies as an httpOnly
+        const production = process.env.NODE_ENV === 'production'
+
         res.cookie('refreshToken', result.refreshToken, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
+            secure: production,
+            sameSite: production ? "none" : "lax",
             path:'/',
             maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
         });
 
         res.cookie('threadId', result.threadId, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
+            secure: production,
+            sameSite: production ? "none" : "lax",
             path:'/',
             maxAge: 1000 * 60 * 60 * 24 * 7,
         });
@@ -87,11 +89,13 @@ const token = async (req, res)=>{
         const user = await service.getUserById(refreshToken.userId)
         //updates cookies
         // overwrite cookies automatically
+        const production = process.env.NODE_ENV === 'production'
+        
         res.cookie(
             'refreshToken',newRToken,{
                 httpOnly: true,
-                secure:process.env.NODE_ENV ==='production',
-                sameSite: 'lax',
+                secure: production,
+                sameSite: production ? "none" : "lax",
                 path:'/',
                 maxAge:1000 *60 *60 *24 *7,
             }
@@ -99,8 +103,8 @@ const token = async (req, res)=>{
         res.cookie(
             'threadId',threadId,{
                 httpOnly: true,
-                secure:process.env.NODE_ENV ==='production',
-                sameSite: 'lax',
+                secure: production,
+                sameSite: production ? "none" : "lax",
                 path:'/',
                 maxAge:1000 *60 *60 *24 *7,
             }
@@ -134,17 +138,19 @@ const logout = async (req, res) =>{
     try{
         const threadId = req.cookies.threadId;
         const result = await service.removeTokenThread(threadId);
+
+        const production = process.env.NODE_ENV === 'production'
         res.clearCookie('refreshToken', {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
+            secure: production,
             path:'/',
-            sameSite: 'lax',
+            sameSite: production? 'none': 'lax',
         });
         res.clearCookie('threadId', {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
+            secure: production,
             path:'/',
-            sameSite: 'lax',
+            sameSite: production? 'none': 'lax',
         });
         res.status(200).json(result)
     }catch(err){
